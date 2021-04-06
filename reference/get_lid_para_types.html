@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • kwb.swmm</title>
+<title>get_lid_para_types — get_lid_para_types • kwb.swmm</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="get_lid_para_types — get_lid_para_types" />
+<meta property="og:description" content="get_lid_para_types" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -123,48 +124,55 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>get_lid_para_types</h1>
+    <small class="dont-index">Source: <a href='https://github.com/KWB-R/kwb.swmm/blob/master/R/get_lid_para_types.R'><code>R/get_lid_para_types.R</code></a></small>
+    <div class="hidden name"><code>get_lid_para_types.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>get_lid_para_types</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>get_lid_para_types</span><span class='op'>(</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="extdata_file.html">extdata_file()</a></code> </p>
-        </td>
-        <td><p>Get Path to File in This Package</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_lid_para_types.html">get_lid_para_types()</a></code> </p>
-        </td>
-        <td><p>get_lid_para_types</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>returns tidy data frame with required parameteration for LIDs based
+on SWMM documentation</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>get_lid_para_types</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'><span style='color: #00BBBB;'>──</span><span> </span><span style='font-weight: bold;'>Column specification</span><span> </span><span style='color: #00BBBB;'>────────────────────────────────────────────────────────</span><span></span>
+#&gt; <span class='message'>cols(</span>
+#&gt; <span class='message'>  lid_id = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
+#&gt; <span class='message'>  lid_name = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
+#&gt; <span class='message'>  lid_name_tidy = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
+#&gt; <span class='message'>  surface = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
+#&gt; <span class='message'>  pavement = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
+#&gt; <span class='message'>  soil = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
+#&gt; <span class='message'>  storage = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
+#&gt; <span class='message'>  drain = </span><span style='color: #BB0000;'>col_character()</span><span>,</span>
+#&gt; <span class='message'>  drainmat = </span><span style='color: #BB0000;'>col_character()</span><span></span>
+#&gt; <span class='message'>)</span></div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 48 x 5</span><span>
+#&gt;    lid_id lid_name           lid_name_tidy      type     value
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> BC     Bio-Retention Cell Bio-Retention Cell surface  x    
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> BC     Bio-Retention Cell Bio-Retention Cell pavement </span><span style='color: #BB0000;'>NA</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> BC     Bio-Retention Cell Bio-Retention Cell soil     x    
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> BC     Bio-Retention Cell Bio-Retention Cell storage  x    
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> BC     Bio-Retention Cell Bio-Retention Cell drain    o    
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> BC     Bio-Retention Cell Bio-Retention Cell drainmat </span><span style='color: #BB0000;'>NA</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> RG     Rain Garden        Rain Garden        surface  x    
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> RG     Rain Garden        Rain Garden        pavement </span><span style='color: #BB0000;'>NA</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> RG     Rain Garden        Rain Garden        soil     x    
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> RG     Rain Garden        Rain Garden        storage  </span><span style='color: #BB0000;'>NA</span><span>   
+#&gt; </span><span style='color: #949494;'># … with 38 more rows</span><span></div><div class='input'>
+</div></span></pre>
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
