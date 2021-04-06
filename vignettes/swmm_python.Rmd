@@ -30,7 +30,7 @@ used.
 
 ## Install miniconda
 
-```{r install_miniconda, eval = is_ghactions}
+```{r install_miniconda, eval = FALSE}
 
 reticulate::install_miniconda()
 ```

@@ -30,5 +30,6 @@ Suggests:
     covr,
     knitr,
     reticulate,
-    rmarkdown
+    rmarkdown,
+    sessioninfo
 VignetteBuilder: knitr
