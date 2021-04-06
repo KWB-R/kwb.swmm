@@ -50,6 +50,19 @@ reticulate::conda_create(env_name, packages = "python=3.8")
 ### Install "pyswmm" (v1.0.1 available, status:2021-01-25)
 ### https://pypi.org/project/pyswmm/ 
 ################################################################################
+reticulate::use_miniconda(condaenv = env_name, required = TRUE)
+
+pyconfig <- reticulate::py_config()
+
+reticulate::use_python(python = pyconfig$python, required = TRUE)
+
+## on windows: (try this: https://github.com/rstudio/reticulate/issues/367#issuecomment-432920802)
+if(.Platform$OS.type == "windows") {
+  Sys.setenv(PATH= paste(PATH = pyconfig$pythonpath, 
+                         Sys.getenv()["PATH"], sep=";")
+  )
+  Sys.setenv(RETICULATE_PYTHON = pyconfig$python)
+}
 
 reticulate::py_install(packages = "pyswmm", 
                        envname = env_name, 
@@ -70,11 +83,10 @@ reticulate::conda_install(envname = env_name,
 # indicate that we want to use a specific condaenv
 reticulate::use_miniconda(condaenv = env_name, required = TRUE)
 
-pyswmm <- reticulate::import("pyswmm")
+reticulate::py_config()
 
-#Fehler in py_module_import(module, convert = convert) : 
-# ImportError: DLL load failed while importing _solver: 
-# The entered module was not found.
+pyswmm <- reticulate::import("pyswmm", convert = TRUE)
+
 
 ### check pyswmm version (should be v1.0.1 as installed using "pip") 
 #pyswmm$VERSION_INFO
@@ -86,10 +98,12 @@ pyswmm <- reticulate::import("pyswmm")
 
 reticulate::conda_create("swmm_conda", packages = c("python=3.8", "pyswmm"))
 
-reticulate::use_miniconda(condaenv = "swmm_conda", required = TRUE)
-
+reticulate::use_miniconda(condaenv = "swmm", required = TRUE)
+reticulate::use_python(pyconfig$python)
 pyswmm <- reticulate::import("pyswmm")
+swmm <- reticulate::import("swmm", convert = TRUE)
 
+res <- pyswmm$Simulation(inputfile = "neubrand.INP",  reportfile = "report.rpt", outputfile = "output.out", swmm_lib_path = "C:/_UserProg/EPA SWMM 5.1.013/")
 #Fehler in py_module_import(module, convert = convert) : 
 # ImportError: DLL load failed while importing _solver: 
 # The entered module was not found.
