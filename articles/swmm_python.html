@@ -88,7 +88,7 @@
       <h1 data-toc-skip>SWMM Python</h1>
                         <h4 class="author">Michael Rustler</h4>
             
-            <h4 class="date">2021-03-25</h4>
+            <h4 class="date">2021-04-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KWB-R/kwb.swmm/blob/master/vignettes/swmm_python.Rmd"><code>vignettes/swmm_python.Rmd</code></a></small>
       <div class="hidden name"><code>swmm_python.Rmd</code></div>
@@ -128,6 +128,19 @@
 <span class="co">### Install "pyswmm" (v1.0.1 available, status:2021-01-25)</span>
 <span class="co">### https://pypi.org/project/pyswmm/ </span>
 <span class="co">################################################################################</span>
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_miniconda</a></span><span class="op">(</span>condaenv <span class="op">=</span> <span class="va">env_name</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+
+<span class="va">pyconfig</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/py_config.html">py_config</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_python</a></span><span class="op">(</span>python <span class="op">=</span> <span class="va">pyconfig</span><span class="op">$</span><span class="va">python</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+
+<span class="co">## on windows: (try this: https://github.com/rstudio/reticulate/issues/367#issuecomment-432920802)</span>
+<span class="kw">if</span><span class="op">(</span><span class="va">.Platform</span><span class="op">$</span><span class="va">OS.type</span> <span class="op">==</span> <span class="st">"windows"</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>PATH<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span>PATH <span class="op">=</span> <span class="va">pyconfig</span><span class="op">$</span><span class="va">pythonpath</span>, 
+                         <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"PATH"</span><span class="op">]</span>, sep<span class="op">=</span><span class="st">";"</span><span class="op">)</span>
+  <span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>RETICULATE_PYTHON <span class="op">=</span> <span class="va">pyconfig</span><span class="op">$</span><span class="va">python</span><span class="op">)</span>
+<span class="op">}</span>
 
 <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/py_install.html">py_install</a></span><span class="op">(</span>packages <span class="op">=</span> <span class="st">"pyswmm"</span>, 
                        envname <span class="op">=</span> <span class="va">env_name</span>, 
@@ -148,11 +161,10 @@
 <span class="co"># indicate that we want to use a specific condaenv</span>
 <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_miniconda</a></span><span class="op">(</span>condaenv <span class="op">=</span> <span class="va">env_name</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="va">pyswmm</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span><span class="op">(</span><span class="st">"pyswmm"</span><span class="op">)</span>
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/py_config.html">py_config</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="co">#Fehler in py_module_import(module, convert = convert) : </span>
-<span class="co"># ImportError: DLL load failed while importing _solver: </span>
-<span class="co"># The entered module was not found.</span>
+<span class="va">pyswmm</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span><span class="op">(</span><span class="st">"pyswmm"</span>, convert <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+
 
 <span class="co">### check pyswmm version (should be v1.0.1 as installed using "pip") </span>
 <span class="co">#pyswmm$VERSION_INFO</span>
@@ -164,10 +176,12 @@
 
 <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/conda-tools.html">conda_create</a></span><span class="op">(</span><span class="st">"swmm_conda"</span>, packages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"python=3.8"</span>, <span class="st">"pyswmm"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_miniconda</a></span><span class="op">(</span>condaenv <span class="op">=</span> <span class="st">"swmm_conda"</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_miniconda</a></span><span class="op">(</span>condaenv <span class="op">=</span> <span class="st">"swmm"</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_python</a></span><span class="op">(</span><span class="va">pyconfig</span><span class="op">$</span><span class="va">python</span><span class="op">)</span>
 <span class="va">pyswmm</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span><span class="op">(</span><span class="st">"pyswmm"</span><span class="op">)</span>
+<span class="va">swmm</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span><span class="op">(</span><span class="st">"swmm"</span>, convert <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
+<span class="va">res</span> <span class="op">&lt;-</span> <span class="va">pyswmm</span><span class="op">$</span><span class="fu">Simulation</span><span class="op">(</span>inputfile <span class="op">=</span> <span class="st">"neubrand.INP"</span>,  reportfile <span class="op">=</span> <span class="st">"report.rpt"</span>, outputfile <span class="op">=</span> <span class="st">"output.out"</span>, swmm_lib_path <span class="op">=</span> <span class="st">"C:/_UserProg/EPA SWMM 5.1.013/"</span><span class="op">)</span>
 <span class="co">#Fehler in py_module_import(module, convert = convert) : </span>
 <span class="co"># ImportError: DLL load failed while importing _solver: </span>
 <span class="co"># The entered module was not found.</span></code></pre></div>
