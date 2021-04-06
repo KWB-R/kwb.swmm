@@ -1,6 +1,6 @@
 lid_id,lid_name,lid_name_tidy,surface,pavement,soil,storage,drain,drainmat
-BC,Bio-Retention Cell,Bio-Retention Cell,x,,x,x,o,
-RG,Rain Garden,Rain Garden,x,,x,,,
+BC,Bio-Retention Cell,bioretention_cell,x,,x,x,o,
+RG,Rain Garden,rain_garden,x,,x,,,
 GR,Green Roof,green_roof,x,,x,,,x
 IT,Infiltration Trench,infiltration_trench,x,,,x,o,
 PP,Permeable Pavement,permeable_pavement,x,x,o,x,o,
