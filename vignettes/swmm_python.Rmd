@@ -31,7 +31,7 @@ used.
 ## Install miniconda
 
 ```{r install_miniconda, eval = FALSE}
-
+reticulate::miniconda_path()
 reticulate::install_miniconda()
 ```
 
@@ -50,7 +50,7 @@ DOES NOT WORK currently!
 ### Microsoft Visual Studio 2017: "Building windows wheels for Python 3.9 requires 
 ### Microsoft Visual Studio 2017 Get it with "Visual Studio 2017§
 
-reticulate::conda_create(env_name, packages = "python=3.8")
+reticulate::conda_create(envname = "swmm_py", packages = "python=3.8")
 
 ################################################################################
 ### Install "pyswmm" (v1.0.1 available, status:2021-01-25)
@@ -187,6 +187,10 @@ sessioninfo::session_info()
 
 ```
 
+```{r session_info_gh, eval = is_ghactions}
+sessioninfo::session_info()
+```
+
 ### Conda Environment Yaml 
 
 pyswmm v1.0.1 (from [PyPi](https://pypi.org/project/pyswmm/))
@@ -220,10 +224,6 @@ prefix: C:\Users\mrustl\AppData\Local\r-miniconda\envs\swmm_py
 
 **pyswmm v0.6.2** (from [conda-forge](https://anaconda.org/conda-forge/pyswmm))
 
-
-```{r session_info_gh, eval = is_ghactions}
-sessioninfo::session_info()
-```
 
 ```
 name: swmm_conda
