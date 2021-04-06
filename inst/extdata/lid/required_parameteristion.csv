@@ -1,0 +1,9 @@
+lid_id,lid_name,lid_name_tidy,surface,pavement,soil,storage,drain,drainmat
+BC,Bio-Retention Cell,Bio-Retention Cell,x,,x,x,o,
+RG,Rain Garden,Rain Garden,x,,x,,,
+GR,Green Roof,green_roof,x,,x,,,x
+IT,Infiltration Trench,infiltration_trench,x,,,x,o,
+PP,Permeable Pavement,permeable_pavement,x,x,o,x,o,
+RB,Rain Barrel,rain_rarrel,,,,x,x,
+RD,Rooftop Disconnection,rooftop_disconnection,x,,,,x,
+VS,Vegetative Swale,vegetative_swale,x,,,,,
