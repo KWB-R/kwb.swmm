@@ -88,7 +88,7 @@
       <h1 data-toc-skip>SWMM Python</h1>
                         <h4 class="author">Michael Rustler</h4>
             
-            <h4 class="date">2021-04-06</h4>
+            <h4 class="date">2021-04-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KWB-R/kwb.swmm/blob/master/vignettes/swmm_python.Rmd"><code>vignettes/swmm_python.Rmd</code></a></small>
       <div class="hidden name"><code>swmm_python.Rmd</code></div>
@@ -104,31 +104,38 @@
 <p>Or <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> with <code><a href="https://rdrr.io/pkg/reticulate/man/install_miniconda.html">reticulate::install_miniconda()</a></code> (no admin rights required).</p>
 <p>For this tutorial <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> is used.</p>
 </div>
-<div id="setup-environment" class="section level2">
+<div id="install-miniconda" class="section level2">
 <h2 class="hasAnchor">
-<a href="#setup-environment" class="anchor"></a>Setup environment</h2>
-<p>Setup an environment named <code>swmm</code> for where we want to install <a href="https://pyswmm.readthedocs.io/en/latest/">pyswmm</a></p>
+<a href="#install-miniconda" class="anchor"></a>Install miniconda</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co">### Install miniconda</span>
-
-<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/install_miniconda.html">install_miniconda</a></span><span class="op">(</span><span class="op">)</span>
-
-
-<span class="co">### Create python environment </span>
-<span class="va">env_name</span> <span class="op">&lt;-</span> <span class="st">"swmm"</span>
+<code class="sourceCode R"><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/install_miniconda.html">install_miniconda</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; * Downloading 'https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh' ...</span>
+<span class="co">#&gt; * Installing Miniconda -- please wait a moment ...</span>
+<span class="co">#&gt; * Miniconda has been successfully installed at '/Users/runner/Library/r-miniconda'.</span>
+<span class="co">#&gt; [1] "/Users/runner/Library/r-miniconda"</span></code></pre></div>
+</div>
+<div id="install-pywmm" class="section level2">
+<h2 class="hasAnchor">
+<a href="#install-pywmm" class="anchor"></a>Install pywmm</h2>
+<div id="pyswmm_v1-0-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pyswmm_v1-0-1" class="anchor"></a>pyswmm_v1.0.1</h3>
+<p>Setup an environment named <code>swmm_py</code> for where we want to install <a href="https://pyswmm.readthedocs.io/en/latest/">pyswmm v1.0.1</a></p>
+<p>DOES NOT WORK currently!</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">### Create python environment </span>
 
 <span class="co">### Use Python 3.8 (as for 3.9 installation of "pyswmm" requires </span>
 <span class="co">### Microsoft Visual Studio 2017: "Building windows wheels for Python 3.9 requires </span>
 <span class="co">### Microsoft Visual Studio 2017 Get it with "Visual Studio 2017§</span>
 
-<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/conda-tools.html">conda_create</a></span><span class="op">(</span><span class="va">env_name</span>, packages <span class="op">=</span> <span class="st">"python=3.8"</span><span class="op">)</span>
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/conda-tools.html">conda_create</a></span><span class="op">(</span>envname <span class="op">=</span> <span class="st">"swmm_py"</span>, packages <span class="op">=</span> <span class="st">"python=3.8"</span><span class="op">)</span>
 
 <span class="co">################################################################################</span>
 <span class="co">### Install "pyswmm" (v1.0.1 available, status:2021-01-25)</span>
 <span class="co">### https://pypi.org/project/pyswmm/ </span>
 <span class="co">################################################################################</span>
-<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_miniconda</a></span><span class="op">(</span>condaenv <span class="op">=</span> <span class="va">env_name</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_miniconda</a></span><span class="op">(</span>condaenv <span class="op">=</span> <span class="st">"swmm_py"</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">pyconfig</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/py_config.html">py_config</a></span><span class="op">(</span><span class="op">)</span>
 
@@ -139,15 +146,15 @@
   <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>PATH<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span>PATH <span class="op">=</span> <span class="va">pyconfig</span><span class="op">$</span><span class="va">pythonpath</span>, 
                          <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"PATH"</span><span class="op">]</span>, sep<span class="op">=</span><span class="st">";"</span><span class="op">)</span>
   <span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>RETICULATE_PYTHON <span class="op">=</span> <span class="va">pyconfig</span><span class="op">$</span><span class="va">python</span><span class="op">)</span>
+ <span class="co"># Sys.setenv(RETICULATE_PYTHON = pyconfig$python)</span>
 <span class="op">}</span>
 
 <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/py_install.html">py_install</a></span><span class="op">(</span>packages <span class="op">=</span> <span class="st">"pyswmm"</span>, 
-                       envname <span class="op">=</span> <span class="va">env_name</span>, 
+                       envname <span class="op">=</span> <span class="st">"swmm_py"</span>, 
                        pip <span class="op">=</span> <span class="cn">TRUE</span>, 
                        pip_ignore_installed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="co">### Downgrade dependency "aenam" to get rid of error: </span>
+<span class="co">### Downgrade dependency "aenum" to get rid of error: </span>
 <span class="co">### reticulate::import("pyswmm") </span>
 <span class="co">### Error in py_module_import(module, convert = convert) : </span>
 <span class="co">### NameError: name 'US' is not defined</span>
@@ -155,37 +162,70 @@
 <span class="co">### should be fixed in next release of "swmm-toolkit" (v0.9.0)</span>
 <span class="co">### https://github.com/OpenWaterAnalytics/swmm-python/pull/67</span>
 
-<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/conda-tools.html">conda_install</a></span><span class="op">(</span>envname <span class="op">=</span> <span class="va">env_name</span>, 
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/conda-tools.html">conda_install</a></span><span class="op">(</span>envname <span class="op">=</span> <span class="st">"swmm_py"</span>, 
                           packages <span class="op">=</span> <span class="st">"aenum=2.2.6"</span><span class="op">)</span>
 
 <span class="co"># indicate that we want to use a specific condaenv</span>
-<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_miniconda</a></span><span class="op">(</span>condaenv <span class="op">=</span> <span class="va">env_name</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_miniconda</a></span><span class="op">(</span>condaenv <span class="op">=</span> <span class="st">"swmm_py"</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/py_config.html">py_config</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">pyswmm</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span><span class="op">(</span><span class="st">"pyswmm"</span>, convert <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
+<span class="co">#Fehler in py_module_import(module, convert = convert) : </span>
+<span class="co"># ImportError: DLL load failed while importing _solver: </span>
+<span class="co"># The entered module was not found.</span>
 
 <span class="co">### check pyswmm version (should be v1.0.1 as installed using "pip") </span>
-<span class="co">#pyswmm$VERSION_INFO</span>
-
-<span class="co">################################################################################</span>
+<span class="co">#pyswmm$VERSION_INFO</span></code></pre></div>
+</div>
+<div id="pyswmm_v0-6-2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pyswmm_v0-6-2" class="anchor"></a>pyswmm_v0.6.2</h3>
+<p>Setup an environment named <code>swmm_conda</code> for where we want to install <a href="https://pyswmm.readthedocs.io/en/latest/">pyswmm v0.6.2</a></p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">################################################################################</span>
 <span class="co">### Install "pyswmm" (v0.6.2 available, status:2021-01-25)</span>
 <span class="co">### https://pypi.org/project/pyswmm/ </span>
 <span class="co">################################################################################</span>
 
 <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/conda-tools.html">conda_create</a></span><span class="op">(</span><span class="st">"swmm_conda"</span>, packages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"python=3.8"</span>, <span class="st">"pyswmm"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] "/Users/runner/Library/r-miniconda/envs/swmm_conda/bin/python"</span>
 
-<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_miniconda</a></span><span class="op">(</span>condaenv <span class="op">=</span> <span class="st">"swmm"</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_miniconda</a></span><span class="op">(</span>condaenv <span class="op">=</span> <span class="st">"swmm_conda"</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+
+<span class="va">pyconfig</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/py_config.html">py_config</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_python</a></span><span class="op">(</span>python <span class="op">=</span> <span class="va">pyconfig</span><span class="op">$</span><span class="va">python</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+
+<span class="co">## on windows: (try this: https://github.com/rstudio/reticulate/issues/367#issuecomment-432920802)</span>
+<span class="kw">if</span><span class="op">(</span><span class="va">.Platform</span><span class="op">$</span><span class="va">OS.type</span> <span class="op">==</span> <span class="st">"windows"</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>PATH<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span>PATH <span class="op">=</span> <span class="va">pyconfig</span><span class="op">$</span><span class="va">pythonpath</span>, 
+                         <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"PATH"</span><span class="op">]</span>, sep<span class="op">=</span><span class="st">";"</span><span class="op">)</span>
+  <span class="op">)</span>
+  <span class="co">#Sys.setenv(RETICULATE_PYTHON = pyconfig$python)</span>
+<span class="op">}</span>
+
+
 <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_python</a></span><span class="op">(</span><span class="va">pyconfig</span><span class="op">$</span><span class="va">python</span><span class="op">)</span>
-<span class="va">pyswmm</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span><span class="op">(</span><span class="st">"pyswmm"</span><span class="op">)</span>
-<span class="va">swmm</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span><span class="op">(</span><span class="st">"swmm"</span>, convert <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="va">res</span> <span class="op">&lt;-</span> <span class="va">pyswmm</span><span class="op">$</span><span class="fu">Simulation</span><span class="op">(</span>inputfile <span class="op">=</span> <span class="st">"neubrand.INP"</span>,  reportfile <span class="op">=</span> <span class="st">"report.rpt"</span>, outputfile <span class="op">=</span> <span class="st">"output.out"</span>, swmm_lib_path <span class="op">=</span> <span class="st">"C:/_UserProg/EPA SWMM 5.1.013/"</span><span class="op">)</span>
-<span class="co">#Fehler in py_module_import(module, convert = convert) : </span>
-<span class="co"># ImportError: DLL load failed while importing _solver: </span>
-<span class="co"># The entered module was not found.</span></code></pre></div>
-<p>Give up for now due to the <code>ImportError: DLL load failed while importing _solver</code></p>
+
+<span class="va">pyswmm</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span><span class="op">(</span><span class="st">"pyswmm"</span><span class="op">)</span>
+<span class="co">### check pyswmm version (should be v0.6.2 as installed using "conda") </span>
+<span class="va">pyswmm</span><span class="op">$</span><span class="va">VERSION_INFO</span>
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt; [1] 6</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[3]]</span>
+<span class="co">#&gt; [1] 2</span>
+
+<span class="co"># withr::with_dir(new = keys.lid::extdata_file("models/green-roof_neubrandenburg"),</span>
+<span class="co"># code = {</span>
+<span class="co"># res &lt;- pyswmm$Simulation(inputfile = "neubrand.inp",  reportfile = "report.rpt", outputfile = "output.out", swmm_lib_path = "C:/_UserProg/EPA SWMM 5.1.013/")</span>
+<span class="co"># })</span></code></pre></div>
+</div>
 </div>
 <div id="dependencies" class="section level2">
 <h2 class="hasAnchor">
@@ -193,205 +233,85 @@
 <div id="r" class="section level3">
 <h3 class="hasAnchor">
 <a href="#r" class="anchor"></a>R</h3>
-<pre><code>sessioninfo::session_info()
-- Session info -------------------------------------------------------------------------------------------
- setting  value                       
- version  R version 4.0.4 (2021-02-15)
- os       Windows 10 x64              
- system   x86_64, mingw32             
- ui       RStudio                     
- language (EN)                        
- collate  German_Germany.1252         
- ctype    German_Germany.1252         
- tz       Europe/Berlin               
- date     2021-03-25                  
-
-- Packages -----------------------------------------------------------------------------------------------
- package     * version date       lib source        
- assertthat    0.2.1   2019-03-21 [1] CRAN (R 4.0.2)
- cli           2.3.1   2021-02-23 [1] CRAN (R 4.0.2)
- digest        0.6.27  2020-10-24 [1] CRAN (R 4.0.3)
- evaluate      0.14    2019-05-28 [1] CRAN (R 4.0.2)
- glue          1.4.2   2020-08-27 [1] CRAN (R 4.0.2)
- htmltools     0.5.1.1 2021-01-22 [1] CRAN (R 4.0.3)
- jsonlite      1.7.2   2020-12-09 [1] CRAN (R 4.0.3)
- knitr         1.31    2021-01-27 [1] CRAN (R 4.0.4)
- lattice       0.20-41 2020-04-02 [1] CRAN (R 4.0.3)
- Matrix        1.3-2   2021-01-06 [2] CRAN (R 4.0.4)
- rappdirs      0.3.3   2021-01-31 [1] CRAN (R 4.0.3)
- Rcpp          1.0.6   2021-01-15 [1] CRAN (R 4.0.3)
- reticulate    1.18    2020-10-25 [1] CRAN (R 4.0.3)
- rlang         0.4.10  2020-12-30 [1] CRAN (R 4.0.3)
- rmarkdown     2.7     2021-02-19 [1] CRAN (R 4.0.4)
- sessioninfo   1.1.1   2018-11-05 [1] CRAN (R 4.0.3)
- withr         2.4.1   2021-01-26 [1] CRAN (R 4.0.3)
- xfun          0.22    2021-03-11 [1] CRAN (R 4.0.4)
- yaml          2.2.1   2020-02-01 [1] CRAN (R 4.0.2)
-
-[1] C:/Users/mrustl/Documents/R/win-library/4.0
-[2] C:/Program Files/R/R-4.0.4/library
-</code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt;  setting  value                       </span>
+<span class="co">#&gt;  version  R version 4.0.5 (2021-03-31)</span>
+<span class="co">#&gt;  os       macOS Catalina 10.15.7      </span>
+<span class="co">#&gt;  system   x86_64, darwin17.0          </span>
+<span class="co">#&gt;  ui       X11                         </span>
+<span class="co">#&gt;  language (EN)                        </span>
+<span class="co">#&gt;  collate  en_US.UTF-8                 </span>
+<span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
+<span class="co">#&gt;  tz       UTC                         </span>
+<span class="co">#&gt;  date     2021-04-07                  </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt;  package     * version date       lib source        </span>
+<span class="co">#&gt;  cachem        1.0.4   2021-02-13 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  cli           2.4.0   2021-04-05 [1] CRAN (R 4.0.5)</span>
+<span class="co">#&gt;  crayon        1.4.1   2021-02-08 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  desc          1.3.0   2021-03-05 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  digest        0.6.27  2020-10-24 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  evaluate      0.14    2019-05-28 [1] CRAN (R 4.0.1)</span>
+<span class="co">#&gt;  fastmap       1.1.0   2021-01-25 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  fs            1.5.0   2020-07-31 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  glue          1.4.2   2020-08-27 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  htmltools     0.5.1.1 2021-01-22 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  jsonlite      1.7.2   2020-12-09 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  knitr         1.31    2021-01-27 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  lattice       0.20-41 2020-04-02 [2] CRAN (R 4.0.5)</span>
+<span class="co">#&gt;  magrittr      2.0.1   2020-11-17 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  Matrix        1.3-2   2021-01-06 [2] CRAN (R 4.0.5)</span>
+<span class="co">#&gt;  memoise       2.0.0   2021-01-26 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  pkgdown       1.6.1   2020-09-12 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  R6            2.5.0   2020-10-28 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  ragg          1.1.2   2021-03-17 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  Rcpp          1.0.6   2021-01-15 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  reticulate    1.18    2020-10-25 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  rlang         0.4.10  2020-12-30 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  rmarkdown     2.7     2021-02-19 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  rprojroot     2.0.2   2020-11-15 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  sessioninfo   1.1.1   2018-11-05 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  stringi       1.5.3   2020-09-09 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  stringr       1.4.0   2019-02-10 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  systemfonts   1.0.1   2021-02-09 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  textshaping   0.3.3   2021-03-16 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  withr         2.4.1   2021-01-26 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  xfun          0.22    2021-03-11 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  yaml          2.2.1   2020-02-01 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [1] /Users/runner/work/_temp/Library</span>
+<span class="co">#&gt; [2] /Library/Frameworks/R.framework/Versions/4.0/Resources/library</span></code></pre></div>
 </div>
 <div id="conda-environment-yaml" class="section level3">
 <h3 class="hasAnchor">
 <a href="#conda-environment-yaml" class="anchor"></a>Conda Environment Yaml</h3>
 <p>pyswmm v1.0.1 (from <a href="https://pypi.org/project/pyswmm/">PyPi</a>)</p>
-<pre><code>name: swmm_pypi
+<pre><code>name: swmm_py
 channels:
   - conda-forge
   - defaults
 dependencies:
   - aenum=2.2.6=pyhd3deb0d_0
-  - alabaster=0.7.12=pyhd3eb1b0_0
-  - appdirs=1.4.4=py_0
-  - argh=0.26.2=py38_0
-  - astroid=2.5=py38haa95532_1
-  - async_generator=1.10=pyhd3eb1b0_0
-  - atomicwrites=1.4.0=py_0
-  - attrs=20.3.0=pyhd3eb1b0_0
-  - autopep8=1.5.6=pyhd3eb1b0_0
-  - babel=2.9.0=pyhd3eb1b0_0
-  - backcall=0.2.0=pyhd3eb1b0_0
-  - bcrypt=3.2.0=py38he774522_0
-  - black=19.10b0=py_0
-  - bleach=3.3.0=pyhd3eb1b0_0
-  - brotlipy=0.7.0=py38h2bbff1b_1003
-  - ca-certificates=2021.1.19=haa95532_1
-  - certifi=2020.12.5=py38haa95532_0
-  - cffi=1.14.5=py38hcd4344a_0
-  - chardet=4.0.0=py38haa95532_1003
-  - click=7.1.2=pyhd3eb1b0_0
-  - cloudpickle=1.6.0=py_0
-  - colorama=0.4.4=pyhd3eb1b0_0
-  - cryptography=3.4.6=py38h71e12ea_0
-  - decorator=4.4.2=pyhd3eb1b0_0
-  - defusedxml=0.7.1=pyhd3eb1b0_0
-  - diff-match-patch=20200713=py_0
-  - docutils=0.16=py38_1
-  - entrypoints=0.3=py38_0
-  - flake8=3.9.0=pyhd3eb1b0_0
-  - future=0.18.2=py38_1
-  - icu=58.2=ha925a31_3
-  - idna=2.10=pyhd3eb1b0_0
-  - imagesize=1.2.0=pyhd3eb1b0_0
-  - importlib-metadata=3.7.3=py38haa95532_1
-  - importlib_metadata=3.7.3=hd3eb1b0_1
-  - intervaltree=3.1.0=py_0
-  - ipykernel=5.3.4=py38h5ca1d4c_0
-  - ipython=7.21.0=py38hd4e2768_0
-  - ipython_genutils=0.2.0=pyhd3eb1b0_1
-  - isort=5.8.0=pyhd3eb1b0_0
-  - jedi=0.17.2=py38haa95532_1
-  - jinja2=2.11.3=pyhd3eb1b0_0
-  - jpeg=9b=hb83a4c4_2
-  - jsonschema=3.2.0=py_2
-  - jupyter_client=6.1.7=py_0
-  - jupyter_core=4.7.1=py38haa95532_0
-  - jupyterlab_pygments=0.1.2=py_0
-  - keyring=22.3.0=py38haa95532_0
-  - lazy-object-proxy=1.6.0=py38h2bbff1b_0
-  - libpng=1.6.37=h2a8f88b_0
-  - libsodium=1.0.18=h62dcd97_0
-  - libspatialindex=1.9.3=h6c2663c_0
-  - markupsafe=1.1.1=py38he774522_0
-  - mccabe=0.6.1=py38_1
-  - mistune=0.8.4=py38he774522_1000
-  - mypy_extensions=0.4.3=py38_0
-  - nbclient=0.5.3=pyhd3eb1b0_0
-  - nbconvert=6.0.7=py38_0
-  - nbformat=5.1.2=pyhd3eb1b0_1
-  - nest-asyncio=1.5.1=pyhd3eb1b0_0
-  - numpydoc=1.1.0=pyhd3eb1b0_1
-  - openssl=1.1.1k=h2bbff1b_0
-  - packaging=20.9=pyhd3eb1b0_0
-  - pandoc=2.12=haa95532_0
-  - pandocfilters=1.4.3=py38haa95532_1
-  - paramiko=2.7.2=py_0
-  - parso=0.7.0=py_0
-  - pathspec=0.7.0=py_0
-  - pexpect=4.8.0=pyhd3eb1b0_3
-  - pickleshare=0.7.5=pyhd3eb1b0_1003
+  - ca-certificates=2020.12.5=h5b45459_0
+  - certifi=2020.12.5=py38haa244fe_1
+  - openssl=1.1.1k=h8ffe710_0
   - pip=21.0.1=pyhd8ed1ab_0
-  - pluggy=0.13.1=py38haa95532_0
-  - prompt-toolkit=3.0.17=pyh06a4308_0
-  - psutil=5.8.0=py38h2bbff1b_1
-  - ptyprocess=0.7.0=pyhd3eb1b0_2
-  - pycodestyle=2.6.0=pyhd3eb1b0_0
-  - pycparser=2.20=py_2
-  - pydocstyle=6.0.0=pyhd3eb1b0_0
-  - pyflakes=2.2.0=pyhd3eb1b0_0
-  - pygments=2.8.1=pyhd3eb1b0_0
-  - pylint=2.7.2=py38haa95532_1
-  - pyls-black=0.4.6=hd3eb1b0_0
-  - pyls-spyder=0.3.2=pyhd3eb1b0_0
-  - pynacl=1.4.0=py38h62dcd97_1
-  - pyopenssl=20.0.1=pyhd3eb1b0_1
-  - pyparsing=2.4.7=pyhd3eb1b0_0
-  - pyqt=5.9.2=py38ha925a31_4
-  - pyrsistent=0.17.3=py38he774522_0
-  - pysocks=1.7.1=py38haa95532_0
   - python=3.8.8=h7840368_0_cpython
-  - python-dateutil=2.8.1=pyhd3eb1b0_0
-  - python-jsonrpc-server=0.4.0=py_0
-  - python-language-server=0.36.2=pyhd3eb1b0_0
   - python_abi=3.8=1_cp38
-  - pytz=2021.1=pyhd3eb1b0_0
-  - pywin32=227=py38he774522_1
-  - pywin32-ctypes=0.2.0=py38_1000
-  - pyyaml=5.4.1=py38h2bbff1b_1
-  - pyzmq=20.0.0=py38hd77b12b_1
-  - qdarkstyle=2.8.1=py_0
-  - qt=5.9.7=vc14h73c81de_0
-  - qtawesome=1.0.2=pyhd3eb1b0_0
-  - qtconsole=5.0.2=pyhd3eb1b0_0
-  - qtpy=1.9.0=py_0
-  - regex=2021.3.17=py38h2bbff1b_0
-  - requests=2.25.1=pyhd3eb1b0_0
-  - rope=0.18.0=py_0
-  - rtree=0.9.4=py38h21ff451_1
   - setuptools=49.6.0=py38haa244fe_3
-  - sip=4.19.13=py38ha925a31_0
-  - six=1.15.0=py38haa95532_0
-  - snowballstemmer=2.1.0=pyhd3eb1b0_0
-  - sortedcontainers=2.3.0=pyhd3eb1b0_0
-  - sphinx=3.5.3=pyhd3eb1b0_0
-  - sphinxcontrib-applehelp=1.0.2=pyhd3eb1b0_0
-  - sphinxcontrib-devhelp=1.0.2=pyhd3eb1b0_0
-  - sphinxcontrib-htmlhelp=1.0.3=pyhd3eb1b0_0
-  - sphinxcontrib-jsmath=1.0.1=pyhd3eb1b0_0
-  - sphinxcontrib-qthelp=1.0.3=pyhd3eb1b0_0
-  - sphinxcontrib-serializinghtml=1.1.4=pyhd3eb1b0_0
-  - spyder=4.2.4=py38haa95532_0
-  - spyder-kernels=1.10.2=py38haa95532_0
-  - sqlite=3.35.2=h8ffe710_0
-  - testpath=0.4.4=pyhd3eb1b0_0
-  - textdistance=4.2.1=pyhd3eb1b0_0
-  - three-merge=0.1.1=pyhd3eb1b0_0
-  - toml=0.10.2=pyhd3eb1b0_0
-  - tornado=6.1=py38h2bbff1b_0
-  - traitlets=5.0.5=pyhd3eb1b0_0
-  - typed-ast=1.4.2=py38h2bbff1b_1
-  - typing_extensions=3.7.4.3=pyha847dfd_0
-  - ujson=4.0.2=py38hd77b12b_0
-  - urllib3=1.26.4=pyhd3eb1b0_0
+  - sqlite=3.35.4=h8ffe710_0
   - vc=14.2=hb210afc_4
   - vs2015_runtime=14.28.29325=h5e1d092_4
-  - watchdog=1.0.2=py38haa95532_1
-  - wcwidth=0.2.5=py_0
-  - webencodings=0.5.1=py38_1
   - wheel=0.36.2=pyhd3deb0d_0
-  - win_inet_pton=1.1.0=py38haa95532_0
   - wincertstore=0.2=py38haa244fe_1006
-  - wrapt=1.12.1=py38he774522_1
-  - yaml=0.2.5=he774522_0
-  - yapf=0.31.0=pyhd3eb1b0_0
-  - zeromq=4.3.3=ha925a31_3
-  - zipp=3.4.1=pyhd3eb1b0_0
-  - zlib=1.2.11=h62dcd97_4
   - pip:
     - pyswmm==1.0.1
     - swmm-toolkit==0.8.1
-prefix: C:\Users\mrustl\.conda\envs\swmm</code></pre>
+prefix: C:\Users\mrustl\AppData\Local\r-miniconda\envs\swmm_py
+</code></pre>
 <p><strong>pyswmm v0.6.2</strong> (from <a href="https://anaconda.org/conda-forge/pyswmm">conda-forge</a>)</p>
 <pre><code>name: swmm_conda
 channels:
