@@ -115,8 +115,6 @@ reticulate::use_miniconda(condaenv = "swmm_conda", required = TRUE)
 
 pyconfig <- reticulate::py_config()
 
-reticulate::use_python(python = pyconfig$python, required = TRUE)
-
 ## on windows: (try this: https://github.com/rstudio/reticulate/issues/367#issuecomment-432920802)
 if(.Platform$OS.type == "windows") {
   Sys.setenv(PATH= paste(PATH = pyconfig$pythonpath, 
@@ -125,18 +123,49 @@ if(.Platform$OS.type == "windows") {
   #Sys.setenv(RETICULATE_PYTHON = pyconfig$python)
 }
 
-
-reticulate::use_python(pyconfig$python)
-
+reticulate::use_python(python = pyconfig$python, required = TRUE)
 
 pyswmm <- reticulate::import("pyswmm")
 ### check pyswmm version (should be v0.6.2 as installed using "conda") 
 pyswmm$VERSION_INFO
 
-# withr::with_dir(new = keys.lid::extdata_file("models/green-roof_neubrandenburg"),
-# code = {
-# res <- pyswmm$Simulation(inputfile = "neubrand.inp",  reportfile = "report.rpt", outputfile = "output.out", swmm_lib_path = "C:/_UserProg/EPA SWMM 5.1.013/")
-# })
+path_swmm_inp <- kwb.swmm::extdata_file("models/green-roof_neubrandenburg/neubrand.inp")
+
+
+withr::with_dir(new = dirname(path_swmm_inp), 
+                code = {
+sim <- pyswmm$Simulation(inputfile = basename(path_swmm_inp),
+                         reportfile = "neubrand.rpt",
+                         outputfile = "neubrand.out")
+                  }
+)
+
+sim$engine_version
+sim$system_units
+sim$flow_units
+sim$engine_version
+sim$execute()
+sim$runoff_error
+
+swmm_lib <- "C:/_UserProg/EPA SWMM 5.1.015/swmm5.dll"
+if(file.exists(swmm_lib)) {
+ 
+ pyswmm$lib$use(swmm_lib)
+ 
+withr::with_dir(new = dirname(path_swmm_inp), 
+                code = {
+sim <- pyswmm$Simulation(inputfile = basename(path_swmm_inp),
+                         reportfile = "neubrand.rpt",
+                         outputfile = "neubrand.out")
+                  }
+) 
+## Errors with: 
+## Fehler in py_call_impl(callable, dots$args, dots$keywords) : 
+## OSError: [WinError 193] %1 ist keine zulaessige Win32-Anwendung
+## open issue: https://github.com/OpenWaterAnalytics/pyswmm/issues/224
+
+}
+
 
 ```
 

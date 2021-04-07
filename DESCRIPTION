@@ -32,7 +32,8 @@ Suggests:
     kwb.python,
     reticulate,
     rmarkdown,
-    sessioninfo
+    sessioninfo,
+    withr
 Remotes:
     github::kwb-r/kwb.python
 VignetteBuilder: knitr
