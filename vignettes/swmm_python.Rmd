@@ -90,9 +90,6 @@ kwb.python::conda_py_install(env_name = "swmm_conda",
                              pkgs = list(conda = c("python=3.8", "pyswmm"), 
                                          py = NULL))
 
-reticulate::conda_create("swmm_conda", packages = c("python=3.8", "pyswmm"))
-
-reticulate::use_miniconda(condaenv = "swmm_conda", required = TRUE)
 
 pyswmm <- reticulate::import("pyswmm")
 ### check pyswmm version (should be v0.6.2 as installed using "conda") 
