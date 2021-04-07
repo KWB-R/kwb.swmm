@@ -22,7 +22,7 @@ Install [Anaconda](https://www.anaconda.com/products/individual) on your compute
 (**requires admin rights!**): 
 [https://www.anaconda.com/products/individual#Downloads](https://www.anaconda.com/products/individual#Downloads)
 
-Or [Miniconda](https://docs.conda.io/en/latest/miniconda.html) with `reticulate::install_miniconda()` (no admin rights required).
+Or [Miniconda](https://docs.conda.io/en/latest/miniconda.html) with `kwb.python::install_miniconda()` (no admin rights required).
 
 For this tutorial [Miniconda](https://docs.conda.io/en/latest/miniconda.html) is 
 used.
@@ -31,7 +31,7 @@ used.
 ## Install miniconda
 
 ```{r install_miniconda, eval = is_ghactions}
-reticulate::install_miniconda()
+kwb.python::install_miniconda()
 ```
 
 ## Install pywmm
