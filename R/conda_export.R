@@ -8,8 +8,8 @@
 #' @importFrom reticulate miniconda_path py_config use_miniconda
 #'
 conda_export <- function(condaenv, export_dir = tempdir()) {
+  stopifnot(dir.exists(reticulate::miniconda_path()))
   stopifnot(dir.exists(export_dir))
-  stofifnot(dir.exists(reticulate::miniconda_path()))
   reticulate::use_miniconda(condaenv = condaenv, required = TRUE)
   pyconfig <- reticulate::py_config()
 
