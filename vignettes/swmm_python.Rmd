@@ -224,7 +224,7 @@ prefix: C:\Users\mrustl\AppData\Local\r-miniconda\envs\swmm_py
 **pyswmm v0.6.2** (from [conda-forge](https://anaconda.org/conda-forge/pyswmm))
 
 
-```{r conda_env_swmm_conda1, echo = FALSE, eval = FALSE}
+```{r conda_env_swmm_conda1, echo = is_ghactions, eval = FALSE}
 name: swmm_conda
 channels:
   - conda-forge
@@ -250,7 +250,7 @@ dependencies:
 prefix: C:\Users\mrustl\.conda\envs\swmm_conda
 ```
 
-```{r conda_env_swmm_conda2}
+```{r conda_env_swmm_conda2, echo = !is_ghactions, eval = !is_ghactions}
 path_environment_yml <- kwb.swmm::conda_export("swmm_conda")
 path_environment_yml
 cat(paste0(readLines(path_environment_yml), collapse = "\n"))
