@@ -24,12 +24,15 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports:
     readr,
-    reticulate,
     tidyr,
     tidyselect
 Suggests: 
     covr,
     knitr,
+    kwb.python,
+    reticulate,
     rmarkdown,
     sessioninfo
+Remotes:
+    github::kwb-r/kwb.python
 VignetteBuilder: knitr
