@@ -195,8 +195,6 @@
 
 <span class="va">pyconfig</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/py_config.html">py_config</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_python</a></span><span class="op">(</span>python <span class="op">=</span> <span class="va">pyconfig</span><span class="op">$</span><span class="va">python</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
 <span class="co">## on windows: (try this: https://github.com/rstudio/reticulate/issues/367#issuecomment-432920802)</span>
 <span class="kw">if</span><span class="op">(</span><span class="va">.Platform</span><span class="op">$</span><span class="va">OS.type</span> <span class="op">==</span> <span class="st">"windows"</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>PATH<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span>PATH <span class="op">=</span> <span class="va">pyconfig</span><span class="op">$</span><span class="va">pythonpath</span>, 
@@ -205,9 +203,7 @@
   <span class="co">#Sys.setenv(RETICULATE_PYTHON = pyconfig$python)</span>
 <span class="op">}</span>
 
-
-<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_python</a></span><span class="op">(</span><span class="va">pyconfig</span><span class="op">$</span><span class="va">python</span><span class="op">)</span>
-
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_python</a></span><span class="op">(</span>python <span class="op">=</span> <span class="va">pyconfig</span><span class="op">$</span><span class="va">python</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">pyswmm</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span><span class="op">(</span><span class="st">"pyswmm"</span><span class="op">)</span>
 <span class="co">### check pyswmm version (should be v0.6.2 as installed using "conda") </span>
@@ -221,10 +217,47 @@
 <span class="co">#&gt; [[3]]</span>
 <span class="co">#&gt; [1] 2</span>
 
-<span class="co"># withr::with_dir(new = keys.lid::extdata_file("models/green-roof_neubrandenburg"),</span>
-<span class="co"># code = {</span>
-<span class="co"># res &lt;- pyswmm$Simulation(inputfile = "neubrand.inp",  reportfile = "report.rpt", outputfile = "output.out", swmm_lib_path = "C:/_UserProg/EPA SWMM 5.1.013/")</span>
-<span class="co"># })</span></code></pre></div>
+<span class="va">path_swmm_inp</span> <span class="op">&lt;-</span> <span class="fu">kwb.swmm</span><span class="fu">::</span><span class="fu"><a href="../reference/extdata_file.html">extdata_file</a></span><span class="op">(</span><span class="st">"models/green-roof_neubrandenburg/neubrand.inp"</span><span class="op">)</span>
+
+
+<span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html">with_dir</a></span><span class="op">(</span>new <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">path_swmm_inp</span><span class="op">)</span>, 
+                code <span class="op">=</span> <span class="op">{</span>
+<span class="va">sim</span> <span class="op">&lt;-</span> <span class="va">pyswmm</span><span class="op">$</span><span class="fu">Simulation</span><span class="op">(</span>inputfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">path_swmm_inp</span><span class="op">)</span>,
+                         reportfile <span class="op">=</span> <span class="st">"neubrand.rpt"</span>,
+                         outputfile <span class="op">=</span> <span class="st">"neubrand.out"</span><span class="op">)</span>
+                  <span class="op">}</span>
+<span class="op">)</span>
+
+<span class="va">sim</span><span class="op">$</span><span class="va">engine_version</span>
+<span class="co">#&gt; 5.3.0.dev0</span>
+<span class="va">sim</span><span class="op">$</span><span class="va">system_units</span>
+<span class="co">#&gt; [1] "SI"</span>
+<span class="va">sim</span><span class="op">$</span><span class="va">flow_units</span>
+<span class="co">#&gt; [1] "LPS"</span>
+<span class="va">sim</span><span class="op">$</span><span class="va">engine_version</span>
+<span class="co">#&gt; 5.3.0.dev0</span>
+<span class="va">sim</span><span class="op">$</span><span class="fu">execute</span><span class="op">(</span><span class="op">)</span>
+<span class="va">sim</span><span class="op">$</span><span class="va">runoff_error</span>
+<span class="co">#&gt; [1] 0</span>
+
+<span class="va">swmm_lib</span> <span class="op">&lt;-</span> <span class="st">"C:/_UserProg/EPA SWMM 5.1.015/swmm5.dll"</span>
+<span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">swmm_lib</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+ 
+ <span class="va">pyswmm</span><span class="op">$</span><span class="va">lib</span><span class="op">$</span><span class="fu">use</span><span class="op">(</span><span class="va">swmm_lib</span><span class="op">)</span>
+ 
+<span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html">with_dir</a></span><span class="op">(</span>new <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">path_swmm_inp</span><span class="op">)</span>, 
+                code <span class="op">=</span> <span class="op">{</span>
+<span class="va">sim</span> <span class="op">&lt;-</span> <span class="va">pyswmm</span><span class="op">$</span><span class="fu">Simulation</span><span class="op">(</span>inputfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">path_swmm_inp</span><span class="op">)</span>,
+                         reportfile <span class="op">=</span> <span class="st">"neubrand.rpt"</span>,
+                         outputfile <span class="op">=</span> <span class="st">"neubrand.out"</span><span class="op">)</span>
+                  <span class="op">}</span>
+<span class="op">)</span> 
+<span class="co">## Errors with: </span>
+<span class="co">## Fehler in py_call_impl(callable, dots$args, dots$keywords) : </span>
+<span class="co">## OSError: [WinError 193] %1 ist keine zulaessige Win32-Anwendung</span>
+<span class="co">## open issue: https://github.com/OpenWaterAnalytics/pyswmm/issues/224</span>
+
+<span class="op">}</span></code></pre></div>
 </div>
 </div>
 <div id="dependencies" class="section level2">
@@ -248,39 +281,55 @@
 <span class="co">#&gt;  date     2021-04-07                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt;  package     * version date       lib source        </span>
-<span class="co">#&gt;  cachem        1.0.4   2021-02-13 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  cli           2.4.0   2021-04-05 [1] CRAN (R 4.0.5)</span>
-<span class="co">#&gt;  crayon        1.4.1   2021-02-08 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  desc          1.3.0   2021-03-05 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  digest        0.6.27  2020-10-24 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  evaluate      0.14    2019-05-28 [1] CRAN (R 4.0.1)</span>
-<span class="co">#&gt;  fastmap       1.1.0   2021-01-25 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  fs            1.5.0   2020-07-31 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  glue          1.4.2   2020-08-27 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  htmltools     0.5.1.1 2021-01-22 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  jsonlite      1.7.2   2020-12-09 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  knitr         1.31    2021-01-27 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  lattice       0.20-41 2020-04-02 [2] CRAN (R 4.0.5)</span>
-<span class="co">#&gt;  magrittr      2.0.1   2020-11-17 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  Matrix        1.3-2   2021-01-06 [2] CRAN (R 4.0.5)</span>
-<span class="co">#&gt;  memoise       2.0.0   2021-01-26 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  pkgdown       1.6.1   2020-09-12 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  R6            2.5.0   2020-10-28 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  ragg          1.1.2   2021-03-17 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  Rcpp          1.0.6   2021-01-15 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  reticulate    1.18    2020-10-25 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  rlang         0.4.10  2020-12-30 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  rmarkdown     2.7     2021-02-19 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  rprojroot     2.0.2   2020-11-15 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  sessioninfo   1.1.1   2018-11-05 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  stringi       1.5.3   2020-09-09 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  stringr       1.4.0   2019-02-10 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  systemfonts   1.0.1   2021-02-09 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  textshaping   0.3.3   2021-03-16 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  withr         2.4.1   2021-01-26 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  xfun          0.22    2021-03-11 [1] CRAN (R 4.0.2)</span>
-<span class="co">#&gt;  yaml          2.2.1   2020-02-01 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  package     * version    date       lib source        </span>
+<span class="co">#&gt;  cachem        1.0.4      2021-02-13 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  cli           2.4.0      2021-04-05 [1] CRAN (R 4.0.5)</span>
+<span class="co">#&gt;  crayon        1.4.1      2021-02-08 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  desc          1.3.0      2021-03-05 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  digest        0.6.27     2020-10-24 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  dplyr         1.0.5      2021-03-05 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  ellipsis      0.3.1      2020-05-15 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  evaluate      0.14       2019-05-28 [1] CRAN (R 4.0.1)</span>
+<span class="co">#&gt;  fansi         0.4.2      2021-01-15 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  fastmap       1.1.0      2021-01-25 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  fs            1.5.0      2020-07-31 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  generics      0.1.0      2020-10-31 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  glue          1.4.2      2020-08-27 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  hms           1.0.0      2021-01-13 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  htmltools     0.5.1.1    2021-01-22 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  jsonlite      1.7.2      2020-12-09 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  knitr         1.31       2021-01-27 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  kwb.swmm      0.0.0.9000 2021-04-07 [1] local         </span>
+<span class="co">#&gt;  lattice       0.20-41    2020-04-02 [2] CRAN (R 4.0.5)</span>
+<span class="co">#&gt;  lifecycle     1.0.0      2021-02-15 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  magrittr      2.0.1      2020-11-17 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  Matrix        1.3-2      2021-01-06 [2] CRAN (R 4.0.5)</span>
+<span class="co">#&gt;  memoise       2.0.0      2021-01-26 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  pillar        1.5.1      2021-03-05 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  pkgconfig     2.0.3      2019-09-22 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  pkgdown       1.6.1      2020-09-12 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  purrr         0.3.4      2020-04-17 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  R6            2.5.0      2020-10-28 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  ragg          1.1.2      2021-03-17 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  Rcpp          1.0.6      2021-01-15 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  readr         1.4.0      2020-10-05 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  reticulate    1.18       2020-10-25 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  rlang         0.4.10     2020-12-30 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  rmarkdown     2.7        2021-02-19 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  rprojroot     2.0.2      2020-11-15 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  sessioninfo   1.1.1      2018-11-05 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  stringi       1.5.3      2020-09-09 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  stringr       1.4.0      2019-02-10 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  systemfonts   1.0.1      2021-02-09 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  textshaping   0.3.3      2021-03-16 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  tibble        3.1.0      2021-02-25 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  tidyr         1.1.3      2021-03-03 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  tidyselect    1.1.0      2020-05-11 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  utf8          1.2.1      2021-03-12 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  vctrs         0.3.7      2021-03-29 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  withr         2.4.1      2021-01-26 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  xfun          0.22       2021-03-11 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  yaml          2.2.1      2020-02-01 [1] CRAN (R 4.0.2)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [1] /Users/runner/work/_temp/Library</span>
 <span class="co">#&gt; [2] /Library/Frameworks/R.framework/Versions/4.0/Resources/library</span></code></pre></div>
