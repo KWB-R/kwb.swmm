@@ -49,30 +49,11 @@ DOES NOT WORK currently!
 ### Microsoft Visual Studio 2017: "Building windows wheels for Python 3.9 requires 
 ### Microsoft Visual Studio 2017 Get it with "Visual Studio 2017§
 
-reticulate::conda_create(envname = "swmm_py", packages = "python=3.8")
 
 ################################################################################
 ### Install "pyswmm" (v1.0.1 available, status:2021-01-25)
 ### https://pypi.org/project/pyswmm/ 
 ################################################################################
-reticulate::use_miniconda(condaenv = "swmm_py", required = TRUE)
-
-pyconfig <- reticulate::py_config()
-
-reticulate::use_python(python = pyconfig$python, required = TRUE)
-
-## on windows: (try this: https://github.com/rstudio/reticulate/issues/367#issuecomment-432920802)
-if(.Platform$OS.type == "windows") {
-  Sys.setenv(PATH= paste(PATH = pyconfig$pythonpath, 
-                         Sys.getenv()["PATH"], sep=";")
-  )
- # Sys.setenv(RETICULATE_PYTHON = pyconfig$python)
-}
-
-reticulate::py_install(packages = "pyswmm", 
-                       envname = "swmm_py", 
-                       pip = TRUE, 
-                       pip_ignore_installed = TRUE)
 
 ### Downgrade dependency "aenum" to get rid of error: 
 ### reticulate::import("pyswmm") 
@@ -82,13 +63,9 @@ reticulate::py_install(packages = "pyswmm",
 ### should be fixed in next release of "swmm-toolkit" (v0.9.0)
 ### https://github.com/OpenWaterAnalytics/swmm-python/pull/67
 
-reticulate::conda_install(envname = "swmm_py", 
-                          packages = "aenum=2.2.6")
-
-# indicate that we want to use a specific condaenv
-reticulate::use_miniconda(condaenv = "swmm_py", required = TRUE)
-
-reticulate::py_config()
+kwb.python::conda_py_install(env_name = "swmm_py", 
+                             pkgs = list(conda = c("python=3.8"), 
+                                         py = c("pyswmm", "aenum==2.2.6")))
 
 pyswmm <- reticulate::import("pyswmm", convert = TRUE)
 #Fehler in py_module_import(module, convert = convert) : 
@@ -109,21 +86,13 @@ Setup an environment named `swmm_conda` for where we want to install [pyswmm v0.
 ### https://pypi.org/project/pyswmm/ 
 ################################################################################
 
+kwb.python::conda_py_install(env_name = "swmm_conda", 
+                             pkgs = list(conda = c("python=3.8", "pyswmm"), 
+                                         py = NULL))
+
 reticulate::conda_create("swmm_conda", packages = c("python=3.8", "pyswmm"))
 
 reticulate::use_miniconda(condaenv = "swmm_conda", required = TRUE)
-
-pyconfig <- reticulate::py_config()
-
-## on windows: (try this: https://github.com/rstudio/reticulate/issues/367#issuecomment-432920802)
-if(.Platform$OS.type == "windows") {
-  Sys.setenv(PATH= paste(PATH = pyconfig$pythonpath, 
-                         Sys.getenv()["PATH"], sep=";")
-  )
-  #Sys.setenv(RETICULATE_PYTHON = pyconfig$python)
-}
-
-reticulate::use_python(python = pyconfig$python, required = TRUE)
 
 pyswmm <- reticulate::import("pyswmm")
 ### check pyswmm version (should be v0.6.2 as installed using "conda") 
