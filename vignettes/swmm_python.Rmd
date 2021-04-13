@@ -246,7 +246,7 @@ prefix: C:\Users\mrustl\.conda\envs\swmm_conda
 ```
 
 ```{r conda_env_swmm_conda2, echo = !is_ghactions, eval = !is_ghactions}
-path_environment_yml <- kwb.swmm::conda_export("swmm_conda")
+path_environment_yml <- kwb.python::conda_export("swmm_conda")
 path_environment_yml
 cat(paste0(readLines(path_environment_yml), collapse = "\n"))
 ```
