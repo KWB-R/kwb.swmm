@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+is_ghactions <- identical(Sys.getenv("CI"), "true")
 ```
 
 ```{r test_swmm, eval = !is_ghactions}
