@@ -142,9 +142,9 @@ if(file.exists(paths$swmm_dll)) {
  
  pyswmm$lib$use(paths$swmm_dll)
  
-withr::with_dir(new = basename(paths$model_inp), 
+withr::with_dir(new = paths$model_dir, 
                 code = {
-sim <- pyswmm$Simulation(inputfile = basename(path_swmm_inp),
+sim <- pyswmm$Simulation(inputfile = basename(paths$model_inp),
                          reportfile = basename(paths$model_rpt),
                          outputfile = basename(paths$model_out))
                   }
