@@ -1,0 +1,19 @@
+﻿surface_name,manning_n
+Smooth asphalt,0.011
+Smooth concrete,0.012
+Ordinary concrete lining,0.013
+Good wood,0.014
+Brick with cement mortar,0.014
+Vitrified clay,0.015
+Cast iron,0.015
+Corrugated metal pipes,0.024
+Cement rubble surface,0.024
+Fallow soils (no residue),0.05
+Cultivated soils: residue cover < 20%,0.06
+Cultivated soils: residue cover > 20%,0.17
+Range (natural),0.13
+Grass: short, prarie,0.15
+Grass: dense,0.24
+Grass: Bermuda,0.41
+Woods: light underbrush,0.40
+Woods: dense underbrush,0.80
