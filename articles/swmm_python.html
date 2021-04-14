@@ -88,7 +88,7 @@
       <h1 data-toc-skip>SWMM Python</h1>
                         <h4 class="author">Michael Rustler</h4>
             
-            <h4 class="date">2021-04-13</h4>
+            <h4 class="date">2021-04-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KWB-R/kwb.swmm/blob/master/vignettes/swmm_python.Rmd"><code>vignettes/swmm_python.Rmd</code></a></small>
       <div class="hidden name"><code>swmm_python.Rmd</code></div>
@@ -175,10 +175,20 @@
 <span class="co">#&gt; version:        3.8.8 | packaged by conda-forge | (default, Feb 20 2021, 16:12:38)  [Clang 11.0.1 ]</span>
 <span class="co">#&gt; numpy:           [NOT FOUND]</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; NOTE: Python version was forced by use_python function</span>
+<span class="co">#&gt; NOTE: Python version was forced by use_python function</span></code></pre></div>
+</div>
+</div>
+<div id="use-pyswmm" class="section level2">
+<h2 class="hasAnchor">
+<a href="#use-pyswmm" class="anchor"></a>Use pyswmm</h2>
+<p>As <a href="#pyswmm_v1.0.1">pyswmm_v1.0.1</a>](#pyswmm_v1-0-1) currently fails to install this tutorial uses <a href="#pyswmm_v0-6-2">pyswmm_v0.6.2</a> in the following.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## force "swmm_conda" environment (pyswmm_v0.6.2)</span>
+<span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/use_python.html">use_miniconda</a></span><span class="op">(</span>condaenv <span class="op">=</span> <span class="st">"swmm_conda"</span>, required <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-
+<span class="co">## load python module "pyswmm"</span>
 <span class="va">pyswmm</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html">import</a></span><span class="op">(</span><span class="st">"pyswmm"</span><span class="op">)</span>
+
 <span class="co">### check pyswmm version (should be v0.6.2 as installed using "conda") </span>
 <span class="va">pyswmm</span><span class="op">$</span><span class="va">VERSION_INFO</span>
 <span class="co">#&gt; [[1]]</span>
@@ -190,14 +200,27 @@
 <span class="co">#&gt; [[3]]</span>
 <span class="co">#&gt; [1] 2</span>
 
-<span class="va">path_swmm_inp</span> <span class="op">&lt;-</span> <span class="fu">kwb.swmm</span><span class="fu">::</span><span class="fu"><a href="../reference/extdata_file.html">extdata_file</a></span><span class="op">(</span><span class="st">"models/green-roof_neubrandenburg/neubrand.inp"</span><span class="op">)</span>
+
+<span class="co">### Define paths</span>
+<span class="va">paths_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  model_dir <span class="op">=</span>  <span class="fu">kwb.swmm</span><span class="fu">::</span><span class="fu"><a href="../reference/extdata_file.html">extdata_file</a></span><span class="op">(</span><span class="st">"models/green-roof_neubrandenburg"</span><span class="op">)</span>,
+  model_name <span class="op">=</span> <span class="st">"neubrand"</span>,
+  model_inp <span class="op">=</span> <span class="st">"&lt;model_dir&gt;/&lt;model_name&gt;.inp"</span>,
+  model_out <span class="op">=</span> <span class="st">"&lt;model_dir&gt;/&lt;model_name&gt;.out"</span>,
+  model_rpt <span class="op">=</span> <span class="st">"&lt;model_dir&gt;/&lt;model_name&gt;.rpt"</span>,
+  swmm_dir <span class="op">=</span> <span class="st">"C:/_UserProg/EPA SWMM 5.1.015"</span>,
+  swmm_exe <span class="op">=</span> <span class="st">"&lt;swmm_dir&gt;/swmm5.exe"</span>,
+  swmm_dll <span class="op">=</span> <span class="st">"&lt;swmm_dir&gt;/swmm5.dll"</span>
+<span class="op">)</span>
+
+<span class="va">paths</span> <span class="op">&lt;-</span> <span class="fu">kwb.utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/kwb.utils/man/resolveAll.html">resolveAll</a></span><span class="op">(</span><span class="va">paths_list</span><span class="op">)</span>
 
 
-<span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html">with_dir</a></span><span class="op">(</span>new <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">path_swmm_inp</span><span class="op">)</span>, 
+<span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html">with_dir</a></span><span class="op">(</span>new <span class="op">=</span> <span class="va">paths</span><span class="op">$</span><span class="va">model_dir</span>, 
                 code <span class="op">=</span> <span class="op">{</span>
-<span class="va">sim</span> <span class="op">&lt;-</span> <span class="va">pyswmm</span><span class="op">$</span><span class="fu">Simulation</span><span class="op">(</span>inputfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">path_swmm_inp</span><span class="op">)</span>,
-                         reportfile <span class="op">=</span> <span class="st">"neubrand.rpt"</span>,
-                         outputfile <span class="op">=</span> <span class="st">"neubrand.out"</span><span class="op">)</span>
+<span class="va">sim</span> <span class="op">&lt;-</span> <span class="va">pyswmm</span><span class="op">$</span><span class="fu">Simulation</span><span class="op">(</span>inputfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">model_inp</span><span class="op">)</span>,
+                         reportfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">model_rpt</span><span class="op">)</span>,
+                         outputfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">model_out</span><span class="op">)</span><span class="op">)</span>
                   <span class="op">}</span>
 <span class="op">)</span>
 
@@ -213,16 +236,15 @@
 <span class="va">sim</span><span class="op">$</span><span class="va">runoff_error</span>
 <span class="co">#&gt; [1] 0</span>
 
-<span class="va">swmm_lib</span> <span class="op">&lt;-</span> <span class="st">"C:/_UserProg/EPA SWMM 5.1.015/swmm5.dll"</span>
-<span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">swmm_lib</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+<span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">swmm_dll</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
  
- <span class="va">pyswmm</span><span class="op">$</span><span class="va">lib</span><span class="op">$</span><span class="fu">use</span><span class="op">(</span><span class="va">swmm_lib</span><span class="op">)</span>
+ <span class="va">pyswmm</span><span class="op">$</span><span class="va">lib</span><span class="op">$</span><span class="fu">use</span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">swmm_dll</span><span class="op">)</span>
  
-<span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html">with_dir</a></span><span class="op">(</span>new <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span><span class="op">(</span><span class="va">path_swmm_inp</span><span class="op">)</span>, 
+<span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html">with_dir</a></span><span class="op">(</span>new <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">model_inp</span><span class="op">)</span>, 
                 code <span class="op">=</span> <span class="op">{</span>
 <span class="va">sim</span> <span class="op">&lt;-</span> <span class="va">pyswmm</span><span class="op">$</span><span class="fu">Simulation</span><span class="op">(</span>inputfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">path_swmm_inp</span><span class="op">)</span>,
-                         reportfile <span class="op">=</span> <span class="st">"neubrand.rpt"</span>,
-                         outputfile <span class="op">=</span> <span class="st">"neubrand.out"</span><span class="op">)</span>
+                         reportfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">model_rpt</span><span class="op">)</span>,
+                         outputfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">model_out</span><span class="op">)</span><span class="op">)</span>
                   <span class="op">}</span>
 <span class="op">)</span> 
 <span class="co">## Errors with: </span>
@@ -232,14 +254,13 @@
 
 <span class="op">}</span></code></pre></div>
 </div>
-</div>
 <div id="dependencies" class="section level2">
 <h2 class="hasAnchor">
 <a href="#dependencies" class="anchor"></a>Dependencies</h2>
 <div id="r" class="section level3">
 <h3 class="hasAnchor">
 <a href="#r" class="anchor"></a>R</h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  setting  value                       </span>
@@ -251,7 +272,7 @@
 <span class="co">#&gt;  collate  en_US.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
 <span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2021-04-13                  </span>
+<span class="co">#&gt;  date     2021-04-14                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package     * version    date       lib source                           </span>
@@ -273,7 +294,8 @@
 <span class="co">#&gt;  jsonlite      1.7.2      2020-12-09 [1] CRAN (R 4.0.2)                   </span>
 <span class="co">#&gt;  knitr         1.31       2021-01-27 [1] CRAN (R 4.0.2)                   </span>
 <span class="co">#&gt;  kwb.python    0.0.0.9000 2021-04-13 [1] Github (kwb-r/kwb.python@d45731e)</span>
-<span class="co">#&gt;  kwb.swmm      0.0.0.9000 2021-04-13 [1] local                            </span>
+<span class="co">#&gt;  kwb.swmm      0.0.0.9000 2021-04-14 [1] local                            </span>
+<span class="co">#&gt;  kwb.utils     0.8.0      2021-04-13 [1] Github (kwb-r/kwb.utils@f58dba7) </span>
 <span class="co">#&gt;  lattice       0.20-41    2020-04-02 [2] CRAN (R 4.0.5)                   </span>
 <span class="co">#&gt;  lifecycle     1.0.0      2021-02-15 [1] CRAN (R 4.0.2)                   </span>
 <span class="co">#&gt;  magrittr      2.0.1      2020-11-17 [1] CRAN (R 4.0.2)                   </span>
@@ -312,53 +334,60 @@
 <h3 class="hasAnchor">
 <a href="#conda-environment-yaml" class="anchor"></a>Conda Environment Yaml</h3>
 <p>pyswmm v1.0.1 (from <a href="https://pypi.org/project/pyswmm/">PyPi</a>)</p>
-<pre><code>name: swmm_py
-channels:
-  - conda-forge
-  - defaults
-dependencies:
-  - aenum=2.2.6=pyhd3deb0d_0
-  - ca-certificates=2020.12.5=h5b45459_0
-  - certifi=2020.12.5=py38haa244fe_1
-  - openssl=1.1.1k=h8ffe710_0
-  - pip=21.0.1=pyhd8ed1ab_0
-  - python=3.8.8=h7840368_0_cpython
-  - python_abi=3.8=1_cp38
-  - setuptools=49.6.0=py38haa244fe_3
-  - sqlite=3.35.4=h8ffe710_0
-  - vc=14.2=hb210afc_4
-  - vs2015_runtime=14.28.29325=h5e1d092_4
-  - wheel=0.36.2=pyhd3deb0d_0
-  - wincertstore=0.2=py38haa244fe_1006
-  - pip:
-    - pyswmm==1.0.1
-    - swmm-toolkit==0.8.1
-prefix: C:\Users\mrustl\AppData\Local\r-miniconda\envs\swmm_py
-</code></pre>
-<p><strong>pyswmm v0.6.2</strong> (from <a href="https://anaconda.org/conda-forge/pyswmm">conda-forge</a>)</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>name<span class="op">:</span><span class="st"> </span>swmm_conda</span>
-<span id="cb6-2"><a href="#cb6-2"></a>channels<span class="op">:</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="st">  </span><span class="op">-</span><span class="st"> </span>conda<span class="op">-</span>forge</span>
-<span id="cb6-4"><a href="#cb6-4"></a>  <span class="op">-</span><span class="st"> </span>defaults</span>
-<span id="cb6-5"><a href="#cb6-5"></a>dependencies<span class="op">:</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="st">  </span><span class="op">-</span><span class="st"> </span>ca<span class="op">-</span>certificates=<span class="dv">2020</span>.<span class="fl">12.5</span>=h5b45459_<span class="dv">0</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a>  <span class="op">-</span><span class="st"> </span>certifi=<span class="dv">2020</span>.<span class="fl">12.5</span>=py38haa244fe_<span class="dv">1</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a>  <span class="op">-</span><span class="st"> </span>llvm<span class="op">-</span>openmp=<span class="dv">8</span>.<span class="fl">0.1</span>=h1ad3211_<span class="dv">0</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a>  <span class="op">-</span><span class="st"> </span>openmp=<span class="dv">8</span>.<span class="fl">0.1</span>=<span class="dv">0</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a>  <span class="op">-</span><span class="st"> </span>openssl=<span class="dv">1</span>.<span class="fl">1.1</span>k=h8ffe710_<span class="dv">0</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a>  <span class="op">-</span><span class="st"> </span>pip=<span class="dv">21</span>.<span class="fl">0.1</span>=pyhd8ed1ab_<span class="dv">0</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a>  <span class="op">-</span><span class="st"> </span>pyswmm=<span class="dv">0</span>.<span class="fl">6.2</span>=pyh9f0ad1d_<span class="dv">1</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a>  <span class="op">-</span><span class="st"> </span>python=<span class="dv">3</span>.<span class="fl">8.8</span>=h7840368_<span class="dv">0</span>_cpython</span>
-<span id="cb6-14"><a href="#cb6-14"></a>  <span class="op">-</span><span class="st"> </span>python_abi=<span class="fl">3.8</span>=<span class="dv">1</span>_cp38</span>
-<span id="cb6-15"><a href="#cb6-15"></a>  <span class="op">-</span><span class="st"> </span>setuptools=<span class="dv">49</span>.<span class="fl">6.0</span>=py38haa244fe_<span class="dv">3</span></span>
-<span id="cb6-16"><a href="#cb6-16"></a>  <span class="op">-</span><span class="st"> </span>six=<span class="dv">1</span>.<span class="fl">15.0</span>=pyh9f0ad1d_<span class="dv">0</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a>  <span class="op">-</span><span class="st"> </span>sqlite=<span class="dv">3</span>.<span class="fl">35.2</span>=h8ffe710_<span class="dv">0</span></span>
-<span id="cb6-18"><a href="#cb6-18"></a>  <span class="op">-</span><span class="st"> </span>swmm=<span class="dv">5</span>.<span class="fl">2.1</span>=ha925a31_<span class="dv">1</span></span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>path_environment_yml &lt;-<span class="st"> </span>kwb.python<span class="op">::</span><span class="kw">conda_export</span>(<span class="st">"swmm_py"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>path_environment_yml</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="kw">readLines</span>(path_environment_yml), <span class="dt">collapse =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>))</span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a>name<span class="op">:</span><span class="st"> </span>swmm_py</span>
+<span id="cb6-6"><a href="#cb6-6"></a>channels<span class="op">:</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="st">  </span><span class="op">-</span><span class="st"> </span>conda<span class="op">-</span>forge</span>
+<span id="cb6-8"><a href="#cb6-8"></a>  <span class="op">-</span><span class="st"> </span>defaults</span>
+<span id="cb6-9"><a href="#cb6-9"></a>dependencies<span class="op">:</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="st">  </span><span class="op">-</span><span class="st"> </span>aenum=<span class="dv">2</span>.<span class="fl">2.6</span>=pyhd3deb0d_<span class="dv">0</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>  <span class="op">-</span><span class="st"> </span>ca<span class="op">-</span>certificates=<span class="dv">2020</span>.<span class="fl">12.5</span>=h5b45459_<span class="dv">0</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>  <span class="op">-</span><span class="st"> </span>certifi=<span class="dv">2020</span>.<span class="fl">12.5</span>=py38haa244fe_<span class="dv">1</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>  <span class="op">-</span><span class="st"> </span>openssl=<span class="dv">1</span>.<span class="fl">1.1</span>k=h8ffe710_<span class="dv">0</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a>  <span class="op">-</span><span class="st"> </span>pip=<span class="dv">21</span>.<span class="fl">0.1</span>=pyhd8ed1ab_<span class="dv">0</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>  <span class="op">-</span><span class="st"> </span>python=<span class="dv">3</span>.<span class="fl">8.8</span>=h7840368_<span class="dv">0</span>_cpython</span>
+<span id="cb6-16"><a href="#cb6-16"></a>  <span class="op">-</span><span class="st"> </span>python_abi=<span class="fl">3.8</span>=<span class="dv">1</span>_cp38</span>
+<span id="cb6-17"><a href="#cb6-17"></a>  <span class="op">-</span><span class="st"> </span>setuptools=<span class="dv">49</span>.<span class="fl">6.0</span>=py38haa244fe_<span class="dv">3</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>  <span class="op">-</span><span class="st"> </span>sqlite=<span class="dv">3</span>.<span class="fl">35.4</span>=h8ffe710_<span class="dv">0</span></span>
 <span id="cb6-19"><a href="#cb6-19"></a>  <span class="op">-</span><span class="st"> </span>vc=<span class="fl">14.2</span>=hb210afc_<span class="dv">4</span></span>
 <span id="cb6-20"><a href="#cb6-20"></a>  <span class="op">-</span><span class="st"> </span>vs2015_runtime=<span class="dv">14</span>.<span class="fl">28.29325</span>=h5e1d092_<span class="dv">4</span></span>
 <span id="cb6-21"><a href="#cb6-21"></a>  <span class="op">-</span><span class="st"> </span>wheel=<span class="dv">0</span>.<span class="fl">36.2</span>=pyhd3deb0d_<span class="dv">0</span></span>
 <span id="cb6-22"><a href="#cb6-22"></a>  <span class="op">-</span><span class="st"> </span>wincertstore=<span class="fl">0.2</span>=py38haa244fe_<span class="dv">1006</span></span>
-<span id="cb6-23"><a href="#cb6-23"></a>prefix<span class="op">:</span><span class="st"> </span>C<span class="op">:</span>\Users\mrustl\.conda\envs\swmm_conda</span></code></pre></div>
+<span id="cb6-23"><a href="#cb6-23"></a>  <span class="op">-</span><span class="st"> </span>pip<span class="op">:</span></span>
+<span id="cb6-24"><a href="#cb6-24"></a><span class="st">    </span><span class="op">-</span><span class="st"> </span>pyswmm<span class="op">==</span><span class="dv">1</span>.<span class="fl">0.1</span></span>
+<span id="cb6-25"><a href="#cb6-25"></a>    <span class="op">-</span><span class="st"> </span>swmm<span class="op">-</span>toolkit<span class="op">==</span><span class="dv">0</span>.<span class="fl">8.1</span></span>
+<span id="cb6-26"><a href="#cb6-26"></a>prefix<span class="op">:</span><span class="st"> </span>C<span class="op">:</span>\Users\mrustl\AppData\Local\r<span class="op">-</span>miniconda\envs\swmm_py</span></code></pre></div>
+<p><strong>pyswmm v0.6.2</strong> (from <a href="https://anaconda.org/conda-forge/pyswmm">conda-forge</a>)</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>path_environment_yml &lt;-<span class="st"> </span>kwb.python<span class="op">::</span><span class="kw">conda_export</span>(<span class="st">"swmm_conda"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>path_environment_yml</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="kw">cat</span>(<span class="kw">paste0</span>(<span class="kw">readLines</span>(path_environment_yml), <span class="dt">collapse =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>))</span>
+<span id="cb7-4"><a href="#cb7-4"></a></span>
+<span id="cb7-5"><a href="#cb7-5"></a>name<span class="op">:</span><span class="st"> </span>swmm_conda</span>
+<span id="cb7-6"><a href="#cb7-6"></a>channels<span class="op">:</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="st">  </span><span class="op">-</span><span class="st"> </span>conda<span class="op">-</span>forge</span>
+<span id="cb7-8"><a href="#cb7-8"></a>  <span class="op">-</span><span class="st"> </span>defaults</span>
+<span id="cb7-9"><a href="#cb7-9"></a>dependencies<span class="op">:</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="st">  </span><span class="op">-</span><span class="st"> </span>ca<span class="op">-</span>certificates=<span class="dv">2020</span>.<span class="fl">12.5</span>=h5b45459_<span class="dv">0</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a>  <span class="op">-</span><span class="st"> </span>certifi=<span class="dv">2020</span>.<span class="fl">12.5</span>=py38haa244fe_<span class="dv">1</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>  <span class="op">-</span><span class="st"> </span>llvm<span class="op">-</span>openmp=<span class="dv">8</span>.<span class="fl">0.1</span>=h1ad3211_<span class="dv">0</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>  <span class="op">-</span><span class="st"> </span>openmp=<span class="dv">8</span>.<span class="fl">0.1</span>=<span class="dv">0</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>  <span class="op">-</span><span class="st"> </span>openssl=<span class="dv">1</span>.<span class="fl">1.1</span>k=h8ffe710_<span class="dv">0</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a>  <span class="op">-</span><span class="st"> </span>pip=<span class="dv">21</span>.<span class="fl">0.1</span>=pyhd8ed1ab_<span class="dv">0</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a>  <span class="op">-</span><span class="st"> </span>pyswmm=<span class="dv">0</span>.<span class="fl">6.2</span>=pyh9f0ad1d_<span class="dv">1</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a>  <span class="op">-</span><span class="st"> </span>python=<span class="dv">3</span>.<span class="fl">8.8</span>=h7840368_<span class="dv">0</span>_cpython</span>
+<span id="cb7-18"><a href="#cb7-18"></a>  <span class="op">-</span><span class="st"> </span>python_abi=<span class="fl">3.8</span>=<span class="dv">1</span>_cp38</span>
+<span id="cb7-19"><a href="#cb7-19"></a>  <span class="op">-</span><span class="st"> </span>setuptools=<span class="dv">49</span>.<span class="fl">6.0</span>=py38haa244fe_<span class="dv">3</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a>  <span class="op">-</span><span class="st"> </span>six=<span class="dv">1</span>.<span class="fl">15.0</span>=pyh9f0ad1d_<span class="dv">0</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a>  <span class="op">-</span><span class="st"> </span>sqlite=<span class="dv">3</span>.<span class="fl">35.2</span>=h8ffe710_<span class="dv">0</span></span>
+<span id="cb7-22"><a href="#cb7-22"></a>  <span class="op">-</span><span class="st"> </span>swmm=<span class="dv">5</span>.<span class="fl">2.1</span>=ha925a31_<span class="dv">1</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a>  <span class="op">-</span><span class="st"> </span>vc=<span class="fl">14.2</span>=hb210afc_<span class="dv">4</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a>  <span class="op">-</span><span class="st"> </span>vs2015_runtime=<span class="dv">14</span>.<span class="fl">28.29325</span>=h5e1d092_<span class="dv">4</span></span>
+<span id="cb7-25"><a href="#cb7-25"></a>  <span class="op">-</span><span class="st"> </span>wheel=<span class="dv">0</span>.<span class="fl">36.2</span>=pyhd3deb0d_<span class="dv">0</span></span>
+<span id="cb7-26"><a href="#cb7-26"></a>  <span class="op">-</span><span class="st"> </span>wincertstore=<span class="fl">0.2</span>=py38haa244fe_<span class="dv">1006</span></span>
+<span id="cb7-27"><a href="#cb7-27"></a>prefix<span class="op">:</span><span class="st"> </span>C<span class="op">:</span>\Users\mrustl\.conda\envs\swmm_conda</span></code></pre></div>
 </div>
 </div>
   </div>
