@@ -91,18 +91,43 @@ kwb.python::conda_py_install(env_name = "swmm_conda",
                                          py = NULL))
 
 
+```
+## Use pyswmm
+
+As [pyswmm_v1.0.1]](#pyswmm_v1-0-1) currently fails to install this 
+tutorial uses [pyswmm_v0.6.2](#pyswmm_v0-6-2) in the following.
+
+```{r use_pyswmm, eval = is_ghactions}
+## force "swmm_conda" environment (pyswmm_v0.6.2)
+reticulate::use_miniconda(condaenv = "swmm_conda", required = TRUE)
+
+## load python module "pyswmm"
 pyswmm <- reticulate::import("pyswmm")
+
 ### check pyswmm version (should be v0.6.2 as installed using "conda") 
 pyswmm$VERSION_INFO
 
-path_swmm_inp <- kwb.swmm::extdata_file("models/green-roof_neubrandenburg/neubrand.inp")
+
+### Define paths
+paths_list <- list(
+  model_dir =  kwb.swmm::extdata_file("models/green-roof_neubrandenburg"),
+  model_name = "neubrand",
+  model_inp = "<model_dir>/<model_name>.inp",
+  model_out = "<model_dir>/<model_name>.out",
+  model_rpt = "<model_dir>/<model_name>.rpt",
+  swmm_dir = "C:/_UserProg/EPA SWMM 5.1.015",
+  swmm_exe = "<swmm_dir>/swmm5.exe",
+  swmm_dll = "<swmm_dir>/swmm5.dll"
+)
+
+paths <- kwb.utils::resolveAll(paths_list)
 
 
-withr::with_dir(new = dirname(path_swmm_inp), 
+withr::with_dir(new = paths$model_dir, 
                 code = {
-sim <- pyswmm$Simulation(inputfile = basename(path_swmm_inp),
-                         reportfile = "neubrand.rpt",
-                         outputfile = "neubrand.out")
+sim <- pyswmm$Simulation(inputfile = basename(paths$model_inp),
+                         reportfile = basename(paths$model_rpt),
+                         outputfile = basename(paths$model_out))
                   }
 )
 
@@ -113,16 +138,15 @@ sim$engine_version
 sim$execute()
 sim$runoff_error
 
-swmm_lib <- "C:/_UserProg/EPA SWMM 5.1.015/swmm5.dll"
-if(file.exists(swmm_lib)) {
+if(file.exists(paths$swmm_dll)) {
  
- pyswmm$lib$use(swmm_lib)
+ pyswmm$lib$use(paths$swmm_dll)
  
-withr::with_dir(new = dirname(path_swmm_inp), 
+withr::with_dir(new = basename(paths$model_inp), 
                 code = {
 sim <- pyswmm$Simulation(inputfile = basename(path_swmm_inp),
-                         reportfile = "neubrand.rpt",
-                         outputfile = "neubrand.out")
+                         reportfile = basename(paths$model_rpt),
+                         outputfile = basename(paths$model_out))
                   }
 ) 
 ## Errors with: 
@@ -132,9 +156,7 @@ sim <- pyswmm$Simulation(inputfile = basename(path_swmm_inp),
 
 }
 
-
 ```
-
 
 ## Dependencies
 
@@ -189,7 +211,17 @@ sessioninfo::session_info()
 
 pyswmm v1.0.1 (from [PyPi](https://pypi.org/project/pyswmm/))
 
+```{r conda_env_swmm_py_01, echo = !is_ghactions, eval = !is_ghactions}
+path_environment_yml <- kwb.python::conda_export("swmm_py")
+path_environment_yml
+cat(paste0(readLines(path_environment_yml), collapse = "\n"))
 ```
+
+```{r conda_env_swmm_py_02, echo = is_ghactions, eval = FALSE}
+path_environment_yml <- kwb.python::conda_export("swmm_py")
+path_environment_yml
+cat(paste0(readLines(path_environment_yml), collapse = "\n"))
+
 name: swmm_py
 channels:
   - conda-forge
@@ -219,7 +251,17 @@ prefix: C:\Users\mrustl\AppData\Local\r-miniconda\envs\swmm_py
 **pyswmm v0.6.2** (from [conda-forge](https://anaconda.org/conda-forge/pyswmm))
 
 
-```{r conda_env_swmm_conda1, echo = is_ghactions, eval = FALSE}
+```{r conda_env_swmm_conda_01, echo = !is_ghactions, eval = !is_ghactions}
+path_environment_yml <- kwb.python::conda_export("swmm_py")
+path_environment_yml
+cat(paste0(readLines(path_environment_yml), collapse = "\n"))
+```
+
+```{r conda_env_swmm_conda_02, echo = is_ghactions, eval = FALSE}
+path_environment_yml <- kwb.python::conda_export("swmm_conda")
+path_environment_yml
+cat(paste0(readLines(path_environment_yml), collapse = "\n"))
+
 name: swmm_conda
 channels:
   - conda-forge
@@ -244,10 +286,3 @@ dependencies:
   - wincertstore=0.2=py38haa244fe_1006
 prefix: C:\Users\mrustl\.conda\envs\swmm_conda
 ```
-
-```{r conda_env_swmm_conda2, echo = !is_ghactions, eval = !is_ghactions}
-path_environment_yml <- kwb.python::conda_export("swmm_conda")
-path_environment_yml
-cat(paste0(readLines(path_environment_yml), collapse = "\n"))
-```
-
