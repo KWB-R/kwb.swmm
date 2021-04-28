@@ -25,10 +25,12 @@ RoxygenNote: 7.1.1
 Imports:
     readr,
     tidyr,
-    tidyselect
+    tidyselect,
+    magrittr
 Suggests: 
     covr,
     knitr,
+    kwb.nextcloud,
     kwb.python,
     kwb.utils,
     reticulate,
@@ -37,6 +39,7 @@ Suggests:
     swmmr,
     withr
 Remotes:
+    github::kwb-r/kwb.nextcloud,
     github::kwb-r/kwb.python,
     github::kwb-r/kwb.utils
 VignetteBuilder: knitr
