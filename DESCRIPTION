@@ -29,6 +29,7 @@ Imports:
     magrittr
 Suggests: 
     covr,
+    dplyr,
     knitr,
     kwb.nextcloud,
     kwb.python,
