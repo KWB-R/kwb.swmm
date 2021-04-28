@@ -1,10 +1,11 @@
 [TITLE]
 ;;Project Title/Notes
+Testgebiet
 
 [OPTIONS]
 ;;Option             Value
 FLOW_UNITS           LPS
-INFILTRATION         MODIFIED_HORTON
+INFILTRATION         HORTON
 FLOW_ROUTING         DYNWAVE
 LINK_OFFSETS         DEPTH
 MIN_SLOPE            0
