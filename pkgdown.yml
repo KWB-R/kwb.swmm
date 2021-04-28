@@ -2,7 +2,8 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  getting-started: getting-started.html
   swmm_python: swmm_python.html
   swmmr: swmmr.html
-last_built: 2021-04-28T12:02Z
+last_built: 2021-04-28T13:11Z
 
