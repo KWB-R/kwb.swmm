@@ -13,7 +13,7 @@ calculate_rainevent_stats(
 )
 }
 \arguments{
-\item{results_system}{data frame as retrieved by \code{\link{get_results_system}}}
+\item{results_system}{data frame as retrieved by \code{\link{get_results}}}
 
 \item{aggregation_function}{function to be used for aggregation and passed to
 \link[kwb.event]{getEventStatistics} (default: "sum")}
@@ -37,7 +37,7 @@ Calculate Rain Events
 \examples{
 \dontrun{
 path_out_file <- "path-to-my-swmm-output-file"
-results_system <- kwb.swmm::get_results_system(path_out = path_out_file)
+results_system <- kwb.swmm::get_results(path_out = path_out_file)
 rainevent_stats <- calculate_rainevent_stats(results_system,
                            aggregation_function = "sum",
                            signalThreshold = 0,
