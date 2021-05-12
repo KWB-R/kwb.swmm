@@ -25,6 +25,8 @@ RoxygenNote: 7.1.1
 Imports:
     data.table,
     dplyr,
+    kwb.event,
+    kwb.utils,
     readr,
     swmmr,
     tidyr,
@@ -35,7 +37,6 @@ Suggests:
     knitr,
     kwb.nextcloud,
     kwb.python,
-    kwb.utils,
     reticulate,
     rmarkdown,
     sessioninfo,
