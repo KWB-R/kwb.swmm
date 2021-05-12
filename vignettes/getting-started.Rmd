@@ -37,9 +37,11 @@ library(kwb.swmm)
 paths_list <- list(
   cloud_dir = "projects/swmm_workshop/data",
   file_rain = "timeseries_dahlem_5min_60_Jahre.txt",
+  file_clim = "timeseries_clim_Dahlem_60_Jahre.txt",
   path_rain = "<cloud_dir>/<file_rain",
-  model_dir =  kwb.swmm::extdata_file("models/workshop"),
-  model_name = "Testgebiet_imp",
+  path_clim = "<cloud_dir>/<file_clim",
+  model_dir =  "C:/kwb/projects/swmm_workshop",
+  model_name = "Testgebiet_LID_andi",
   model_inp = "<model_dir>/<model_name>.inp",
   model_out = "<model_dir>/<model_name>.out",
   model_rpt = "<model_dir>/<model_name>.rpt",
@@ -121,7 +123,15 @@ swmmr::run_swmm(inp = paths$model_inp,
                 out = paths$model_out,
                 exec = paths$swmm_exe)
                 
-swmm_inp <- swmmr::read_inp(paths$model_inp)
+inp <- swmmr::read_inp(paths$model_inp)
 
+str(inp$lid_usage)
+
+
+<!-- new_par <- inp$lid_usage %>% -->
+<!-- dplyr::filter(Subcatchment == "Hof1") %>%  -->
+<!-- dplyr::mutate(Subcatchment = "Hof2") -->
+
+<!-- dplyr::bind_rows(inp$lid_usage, new_par) -->
 
 ```
