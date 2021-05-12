@@ -15,6 +15,7 @@
 #' @importFrom kwb.utils catAndRun
 #' @importFrom kwb.event getEventStatistics getEvents
 #' @importFrom stats setNames
+#' @importFrom tidyselect all_of
 #' @examples
 #' \dontrun{
 #' path_out_file <- "path-to-my-swmm-output-file"
@@ -54,7 +55,7 @@ calculate_rainevent_stats <- function(results_system,
                                                          events = rain_events,
                                                          functions = aggregation_function
                            ) %>%
-                             dplyr::rename(value = aggregation_function)
+                             dplyr::rename(value = tidyselect::all_of(aggregation_function))
                          })}), nm =   para_aggr_name)
 
 
@@ -65,6 +66,7 @@ calculate_rainevent_stats <- function(results_system,
 
 
   rain_events %>%
+    dplyr::mutate(event = dplyr::row_number()) %>%
     dplyr::left_join(event_stats_wide)
 
 }
