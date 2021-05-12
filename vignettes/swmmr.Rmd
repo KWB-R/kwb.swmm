@@ -36,4 +36,6 @@ swmmr::run_swmm(inp = paths$model_inp,
                 out = paths$model_out,
                 exec = paths$swmm_exe)
 
+inp <- swmmr::read_inp(paths$model_inp)
+
 ```
