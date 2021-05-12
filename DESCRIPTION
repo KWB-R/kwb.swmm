@@ -23,13 +23,15 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports:
+    data.table,
+    dplyr,
     readr,
+    swmmr,
     tidyr,
     tidyselect,
     magrittr
 Suggests: 
     covr,
-    dplyr,
     knitr,
     kwb.nextcloud,
     kwb.python,
@@ -37,7 +39,6 @@ Suggests:
     reticulate,
     rmarkdown,
     sessioninfo,
-    swmmr,
     withr
 Remotes:
     github::kwb-r/kwb.nextcloud,
