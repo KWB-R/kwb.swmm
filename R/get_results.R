@@ -1,11 +1,11 @@
 #' Helper function: get metadata for selected elements
-#' @param name of element to select. one of: c("subcatchments", "nodes", "links", "system")
+#' @param name of element to select. one of: c("subcatchments", "nodes", "links",
+#' "system")
 #' @param path_out path to SWMM output file
-#' @return tibble with columns "name", "itype", "vindex" and corresponding IDs required for \link[swmmr]{read_out}
+#' @return tibble with columns "name", "itype", "vindex" and corresponding IDs
+#' required for \link[swmmr]{read_out}
 #' @export
 #' @importFrom  tibble tibble
-#' @examples
-#' get_itype(name = "subcatchments")
 get_meta <- function(name,
                      path_out) {
 
@@ -30,7 +30,6 @@ get_meta <- function(name,
 #' Helper function: get parameters from result list
 #' @param result_list result_list
 #' @return tibble with columns "name", "itype", "vindex" and corresponding IDs required for \link[swmmr]{read_out}
-#' @export
 #' @importFrom data.table as.data.table rbindlist
 #' @importFrom dplyr rename
 #' @importFrom tidyr pivot_wider
@@ -103,7 +102,7 @@ get_results_elements <- function(path_out,
 
   meta <- get_meta(type, path_out)
 
-  object_names_available <- swmmr::get_out_content(paths$model_out)[[type]]$names
+  object_names_available <- swmmr::get_out_content(path_out)[[type]]$names
 
   if(is.null(object_name)) {
     object_name <- object_names_available

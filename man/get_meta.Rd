@@ -7,16 +7,15 @@
 get_meta(name, path_out)
 }
 \arguments{
-\item{name}{of element to select. one of: c("subcatchments", "nodes", "links", "system")}
+\item{name}{of element to select. one of: c("subcatchments", "nodes", "links",
+"system")}
 
 \item{path_out}{path to SWMM output file}
 }
 \value{
-tibble with columns "name", "itype", "vindex" and corresponding IDs required for \link[swmmr]{read_out}
+tibble with columns "name", "itype", "vindex" and corresponding IDs
+required for \link[swmmr]{read_out}
 }
 \description{
 Helper function: get metadata for selected elements
-}
-\examples{
-get_itype(name = "subcatchments")
 }
