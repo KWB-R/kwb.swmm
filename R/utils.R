@@ -9,17 +9,29 @@ extdata_file <- function(...) {
 }
 
 
-#' Convert squaremeter to hectar
+#' Helper function: squaremeter to hectar
 #'
-#' @param squaremeter squaremeter
+#' @param squaremeter squarmeter
 #'
-#' @return returns hectars
+#' @return area in hectar
 #' @export
 #'
 #' @examples
-#' squaremeter_to_hectar(10000)
-#'
+#' squaremeter_to_hectar(100)
 squaremeter_to_hectar <- function(squaremeter) {
   squaremeter / 10000
+}
+
+#' Helper function: hectar to squaremeter
+#'
+#' @param hectar hectar
+#'
+#' @return area in hectar
+#' @export
+#'
+#' @examples
+#' squaremeter_to_hectar(100)
+hectar_to_squaremeter <- function(hectar) {
+  hectar * 10000
 }
 

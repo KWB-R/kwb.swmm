@@ -2,20 +2,19 @@
 % Please edit documentation in R/utils.R
 \name{squaremeter_to_hectar}
 \alias{squaremeter_to_hectar}
-\title{Convert squaremeter to hectar}
+\title{Helper function: squaremeter to hectar}
 \usage{
 squaremeter_to_hectar(squaremeter)
 }
 \arguments{
-\item{squaremeter}{squaremeter}
+\item{squaremeter}{squarmeter}
 }
 \value{
-returns hectars
+area in hectar
 }
 \description{
-Convert squaremeter to hectar
+Helper function: squaremeter to hectar
 }
 \examples{
-squaremeter_to_hectar(10000)
-
+squaremeter_to_hectar(100)
 }

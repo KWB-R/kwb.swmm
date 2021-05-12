@@ -3,6 +3,7 @@
 export("%>%")
 export(extdata_file)
 export(get_lid_para_types)
+export(hectar_to_squaremeter)
 export(squaremeter_to_hectar)
 importFrom(magrittr,"%>%")
 importFrom(readr,read_csv)
