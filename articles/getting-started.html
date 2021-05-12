@@ -123,9 +123,11 @@ library(kwb.swmm)
 paths_list &lt;- list(
   cloud_dir = "projects/swmm_workshop/data",
   file_rain = "timeseries_dahlem_5min_60_Jahre.txt",
+  file_clim = "timeseries_clim_Dahlem_60_Jahre.txt",
   path_rain = "&lt;cloud_dir&gt;/&lt;file_rain",
-  model_dir =  kwb.swmm::extdata_file("models/workshop"),
-  model_name = "Testgebiet_imp",
+  path_clim = "&lt;cloud_dir&gt;/&lt;file_clim",
+  model_dir =  "C:/kwb/projects/swmm_workshop",
+  model_name = "Testgebiet_LID_andi",
   model_inp = "&lt;model_dir&gt;/&lt;model_name&gt;.inp",
   model_out = "&lt;model_dir&gt;/&lt;model_name&gt;.out",
   model_rpt = "&lt;model_dir&gt;/&lt;model_name&gt;.rpt",
@@ -142,23 +144,29 @@ paths
 #&gt; $file_rain
 #&gt; [1] "timeseries_dahlem_5min_60_Jahre.txt"
 #&gt; 
+#&gt; $file_clim
+#&gt; [1] "timeseries_clim_Dahlem_60_Jahre.txt"
+#&gt; 
 #&gt; $path_rain
 #&gt; [1] "projects/swmm_workshop/data/&lt;file_rain"
 #&gt; 
+#&gt; $path_clim
+#&gt; [1] "projects/swmm_workshop/data/&lt;file_clim"
+#&gt; 
 #&gt; $model_dir
-#&gt; [1] "/Users/runner/work/_temp/Library/kwb.swmm/extdata/models/workshop"
+#&gt; [1] "C:/kwb/projects/swmm_workshop"
 #&gt; 
 #&gt; $model_name
-#&gt; [1] "Testgebiet_imp"
+#&gt; [1] "Testgebiet_LID_andi"
 #&gt; 
 #&gt; $model_inp
-#&gt; [1] "/Users/runner/work/_temp/Library/kwb.swmm/extdata/models/workshop/Testgebiet_imp.inp"
+#&gt; [1] "C:/kwb/projects/swmm_workshop/Testgebiet_LID_andi.inp"
 #&gt; 
 #&gt; $model_out
-#&gt; [1] "/Users/runner/work/_temp/Library/kwb.swmm/extdata/models/workshop/Testgebiet_imp.out"
+#&gt; [1] "C:/kwb/projects/swmm_workshop/Testgebiet_LID_andi.out"
 #&gt; 
 #&gt; $model_rpt
-#&gt; [1] "/Users/runner/work/_temp/Library/kwb.swmm/extdata/models/workshop/Testgebiet_imp.rpt"
+#&gt; [1] "C:/kwb/projects/swmm_workshop/Testgebiet_LID_andi.rpt"
 #&gt; 
 #&gt; $swmm_dir
 #&gt; [1] "C:/_UserProg/EPA SWMM 5.1.015"
@@ -177,7 +185,7 @@ paths
 <div id="locally" class="section level3">
 <h3 class="hasAnchor">
 <a href="#locally" class="anchor"></a>Locally</h3>
-<p>Copy the content of the KWB cloud folder projects/swmm_workshop/data to <code>paths$model_dir</code> (here: /Users/runner/work/_temp/Library/kwb.swmm/extdata/models/workshop).</p>
+<p>Copy the content of the KWB cloud folder projects/swmm_workshop/data to <code>paths$model_dir</code> (here: C:/kwb/projects/swmm_workshop).</p>
 </div>
 <div id="cloud" class="section level3">
 <h3 class="hasAnchor">
@@ -218,14 +226,22 @@ NEXTCLOUD_PASSWORD = "your-nextcloud-app-password" ### see details below</code><
 <div id="run-swmm" class="section level1">
 <h1 class="hasAnchor">
 <a href="#run-swmm" class="anchor"></a>Run SWMM</h1>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># run andi`s model </span>
-<span class="fu">swmmr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/swmmr/man/run_swmm.html">run_swmm</a></span><span class="op">(</span>inp <span class="op">=</span> <span class="va">paths</span><span class="op">$</span><span class="va">model_inp</span>,
-                rpt <span class="op">=</span> <span class="va">paths</span><span class="op">$</span><span class="va">model_rpt</span>,
-                out <span class="op">=</span> <span class="va">paths</span><span class="op">$</span><span class="va">model_out</span>,
-                exec <span class="op">=</span> <span class="va">paths</span><span class="op">$</span><span class="va">swmm_exe</span><span class="op">)</span>
-                
-<span class="va">swmm_inp</span> <span class="op">&lt;-</span> <span class="fu">swmmr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/swmmr/man/read_inp.html">read_inp</a></span><span class="op">(</span><span class="va">paths</span><span class="op">$</span><span class="va">model_inp</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># run andi`s model </span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>swmmr<span class="op">::</span><span class="kw">run_swmm</span>(<span class="dt">inp =</span> paths<span class="op">$</span>model_inp,</span>
+<span id="cb4-3"><a href="#cb4-3"></a>                <span class="dt">rpt =</span> paths<span class="op">$</span>model_rpt,</span>
+<span id="cb4-4"><a href="#cb4-4"></a>                <span class="dt">out =</span> paths<span class="op">$</span>model_out,</span>
+<span id="cb4-5"><a href="#cb4-5"></a>                <span class="dt">exec =</span> paths<span class="op">$</span>swmm_exe)</span>
+<span id="cb4-6"><a href="#cb4-6"></a>                </span>
+<span id="cb4-7"><a href="#cb4-7"></a>inp &lt;-<span class="st"> </span>swmmr<span class="op">::</span><span class="kw">read_inp</span>(paths<span class="op">$</span>model_inp)</span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="kw">str</span>(inp<span class="op">$</span>lid_usage)</span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="op">&lt;!--</span><span class="st"> </span>new_par &lt;-<span class="st"> </span>inp<span class="op">$</span>lid_usage <span class="op">%&gt;%</span><span class="st"> </span><span class="op">-</span>-&gt;</span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="er">&lt;</span><span class="op">!--</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(Subcatchment <span class="op">==</span><span class="st"> "Hof1"</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="op">-</span>-&gt;</span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="er">&lt;</span><span class="op">!--</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">Subcatchment =</span> <span class="st">"Hof2"</span>) <span class="op">-</span>-&gt;</span>
+<span id="cb4-15"><a href="#cb4-15"></a></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="er">&lt;</span><span class="op">!--</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">bind_rows</span>(inp<span class="op">$</span>lid_usage, new_par) <span class="op">-</span>-&gt;</span></code></pre></div>
 </div>
   </div>
 
