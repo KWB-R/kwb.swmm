@@ -17,7 +17,7 @@ get_results_system <- function(path_out,
 
   # read out results itype 3 (= system) and all available vIndexes
 
-  swmmr::read_out(path_out_file, iType = 3, vIndex = vIndex)[[1]] %>%
+  swmmr::read_out(path_out, iType = 3, vIndex = vIndex)[[1]] %>%
     lapply(function(output) {
       output %>%
         data.table::as.data.table() %>%
