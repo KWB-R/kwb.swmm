@@ -43,7 +43,6 @@ Suggests:
     sessioninfo,
     withr
 Remotes:
-    github::hsonne/swmmr@mydev,
     github::kwb-r/kwb.event,
     github::kwb-r/kwb.nextcloud,
     github::kwb-r/kwb.python,
