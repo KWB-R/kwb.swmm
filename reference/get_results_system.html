@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • kwb.swmm</title>
+<title>Get Results for System — get_results_system • kwb.swmm</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Get Results for System — get_results_system" />
+<meta property="og:description" content="Get Results for System" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -126,66 +127,39 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Get Results for System</h1>
+    <small class="dont-index">Source: <a href='https://github.com/KWB-R/kwb.swmm/blob/master/R/get_results_system.R'><code>R/get_results_system.R</code></a></small>
+    <div class="hidden name"><code>get_results_system.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Get Results for System</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>get_results_system</span><span class='op'>(</span><span class='va'>path_out</span>, vIndex <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>14</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="extdata_file.html">extdata_file()</a></code> </p>
-        </td>
-        <td><p>Get Path to File in This Package</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_lid_para_types.html">get_lid_para_types()</a></code> </p>
-        </td>
-        <td><p>get_lid_para_types</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_results_system.html">get_results_system()</a></code> </p>
-        </td>
-        <td><p>Get Results for System</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="hectar_to_squaremeter.html">hectar_to_squaremeter()</a></code> </p>
-        </td>
-        <td><p>Helper function: hectar to squaremeter</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="squaremeter_to_hectar.html">squaremeter_to_hectar()</a></code> </p>
-        </td>
-        <td><p>Helper function: squaremeter to hectar</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>path_out</th>
+      <td><p>path to SWMM output file</p></td>
+    </tr>
+    <tr>
+      <th>vIndex</th>
+      <td><p>indexes of system wide indexes to be imported. By default
+all indexes will be imported (default: 1:14). If only selected vIndex`s should
+be imported have a look at the documentation of <a href='https://rdrr.io/pkg/swmmr/man/read_out.html'>read_out</a></p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>tibble with selected system variables</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
