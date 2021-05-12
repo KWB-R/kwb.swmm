@@ -29,6 +29,7 @@ Imports:
     kwb.utils,
     readr,
     swmmr,
+    tibble,
     tidyr,
     tidyselect,
     magrittr
