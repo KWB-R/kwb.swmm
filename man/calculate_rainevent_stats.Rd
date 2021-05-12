@@ -6,6 +6,7 @@
 \usage{
 calculate_rainevent_stats(
   results_system,
+  col_eventsep = "total_runoff",
   aggregation_function = "sum",
   signalThreshold = 0,
   eventSeparationTime = 6 * 3600,
@@ -14,6 +15,8 @@ calculate_rainevent_stats(
 }
 \arguments{
 \item{results_system}{data frame as retrieved by \code{\link{get_results}}}
+
+\item{col_eventsep}{column to be used for event separation (default: "total_runoff")}
 
 \item{aggregation_function}{function to be used for aggregation and passed to
 \link[kwb.event]{getEventStatistics} (default: "sum")}

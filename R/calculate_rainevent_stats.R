@@ -3,6 +3,7 @@
 #' @param results_system data frame as retrieved by \code{\link{get_results}}
 #' @param aggregation_function function to be used for aggregation and passed to
 #' \link[kwb.event]{getEventStatistics} (default: "sum")
+#' @param col_eventsep column to be used for event separation (default: "total_runoff")
 #' @param signalThreshold passed to \link[kwb.event]{getEvents}, Value that needs
 #' to be exceeded (signalComparisonOperator == "gt") or reached (signalComparisonOperator == "ge")
 #' by the rain heights (or intensities) in order to be counted as a "signal".
@@ -26,13 +27,14 @@
 #'                            eventSeparationTime = 6*3600)
 #' }
 calculate_rainevent_stats <- function(results_system,
+                                      col_eventsep = "total_runoff",
                                       aggregation_function = "sum",
                                       signalThreshold = 0,
                                       eventSeparationTime = 6*3600,
                                       ...) {
 
-  rain_events <- kwb.event::getEvents(rainData = results_system[, c("datetime", "total_rainfall")],
-                                      seriesName = "total_rainfall",
+  rain_events <- kwb.event::getEvents(rainData = results_system[, c("datetime", col_eventsep)],
+                                      seriesName = col_eventsep,
                                       signalThreshold = signalThreshold,
                                       eventSeparationTime = eventSeparationTime,
                                       ...)
