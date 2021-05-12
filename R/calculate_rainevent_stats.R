@@ -59,12 +59,12 @@ calculate_rainevent_stats <- function(results_system,
 
 
   event_stats_wide <-  event_stats %>%
-    dplyr::bind_rows(.id = "key")
+    dplyr::bind_rows(.id = "key") %>%
   tidyr::pivot_wider(names_from = "key",
                      values_from = "value")
 
 
   rain_events %>%
-    dplyr::left_join(rain_events)
+    dplyr::left_join(event_stats_wide)
 
 }
