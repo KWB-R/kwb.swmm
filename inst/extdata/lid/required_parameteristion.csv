@@ -4,6 +4,6 @@ RG,Rain Garden,rain_garden,x,,x,,,
 GR,Green Roof,green_roof,x,,x,,,x
 IT,Infiltration Trench,infiltration_trench,x,,,x,o,
 PP,Permeable Pavement,permeable_pavement,x,x,o,x,o,
-RB,Rain Barrel,rain_rarrel,,,,x,x,
+RB,Rain Barrel,rain_barrel,,,,x,x,
 RD,Rooftop Disconnection,rooftop_disconnection,x,,,,x,
 VS,Vegetative Swale,vegetative_swale,x,,,,,
