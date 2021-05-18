@@ -6,6 +6,7 @@
 #' required for \link[swmmr]{read_out}
 #' @export
 #' @importFrom  tibble tibble
+#' @importFrom swmmr get_out_content
 get_meta <- function(name,
                      path_out) {
 
@@ -90,7 +91,7 @@ get_results_system <- function(path_out,
 #' be imported have a look at the documentation of \link[swmmr]{read_out}
 #'
 #' @return tibble with selected system variables
-#' @importFrom swmmr read_out
+#' @importFrom swmmr read_out get_out_content
 #' @keywords internal
 #' @noRd
 
@@ -136,7 +137,6 @@ get_results_elements <- function(path_out,
 #' @return for "system" a tibble with selected system variables, for all other "type"
 #' a list with sublists for each "object_name"
 #' @export
-#' @importFrom swmmr get_out_content read_out
 #' @importFrom data.table as.data.table rbindlist
 #' @importFrom dplyr rename
 #' @importFrom tidyr pivot_wider
