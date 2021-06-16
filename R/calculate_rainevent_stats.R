@@ -69,6 +69,6 @@ calculate_rainevent_stats <- function(results_system,
 
   rain_events %>%
     dplyr::mutate(event = dplyr::row_number()) %>%
-    dplyr::left_join(event_stats_wide)
+    dplyr::left_join(event_stats_wide, by = "event")
 
 }
