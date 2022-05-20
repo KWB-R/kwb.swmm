@@ -15,3 +15,6 @@ values in mm per hour
 \description{
 Helper function: converts l/s into mm/h
 }
+\examples{
+lps_to_mmPerHour(1)
+}
