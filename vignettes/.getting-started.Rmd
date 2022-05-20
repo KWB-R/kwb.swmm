@@ -1,0 +1,137 @@
+---
+title: "Getting Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+## Model parameterisation
+
+### Units
+
+[https://swmm5.org/2019/01/20/refactoring-the-swmm-5-help-file-projects-in-swmm5](https://swmm5.org/2019/01/20/refactoring-the-swmm-5-help-file-projects-in-swmm5)
+
+
+# Install KWB package 'kwb-r/kwb.swmm' from GitHub
+remotes::install_github("kwb-r/kwb.swmm", dependencies = TRUE)
+
+```
+
+## Define paths
+
+```{r define_paths}
+# Load the R package
+library(kwb.swmm)
+
+### define paths
+paths_list <- list(
+  cloud_dir = "projects/swmm_workshop/data",
+  file_rain = "timeseries_dahlem_5min_60_Jahre.txt",
+  file_clim = "timeseries_clim_Dahlem_60_Jahre.txt",
+  path_rain = "<cloud_dir>/<file_rain",
+  path_clim = "<cloud_dir>/<file_clim",
+  model_dir =  "C:/kwb/projects/swmm_workshop",
+  model_name = "Testgebiet_LID_andi",
+  model_inp = "<model_dir>/<model_name>.inp",
+  model_out = "<model_dir>/<model_name>.out",
+  model_rpt = "<model_dir>/<model_name>.rpt",
+  swmm_dir = "C:/_UserProg/EPA SWMM 5.1.015",
+  swmm_exe = "<swmm_dir>/swmm5.exe"
+)
+
+paths <- kwb.utils::resolve(paths_list)
+
+paths
+```
+
+## SWMM Files
+
+This tutorial needs a few `climate` files which can be provided [locally](#locally)
+from a predefined folder on your Windows computer or directly downloaded from
+the KWB [Cloud](#cloud). Within this tutorial the latter approach is used. 
+
+Currently one climate input file (rain) and a SWMM `.inp` file are required:
+
+* `<model_name>`.`inp` (input: SWMM model, prepared using SWMM-GUI, here: `r paths$model_path`)
+
+* `<rain-data>`.`txt` (input: rain data)
+
+
+### Locally
+
+Copy the content of the KWB cloud folder `r paths$cloud_dir` to `paths$model_dir` (here: `r paths$model_dir`).
+
+### Cloud 
+
+You can download the required model files from the KWB cloud if you are a 
+registered user with access to the folder ``r paths$cloud_dir``
+
+For doing so follow the steps below: 
+
+1. Open `RStudio` and run `usethis::edit_r_environ()`
+
+2. In the opened window add the required environment variables
+
+```
+NEXTCLOUD_URL = "https://<replace-with-kwb-cloud-url>"
+NEXTCLOUD_USER = "<your-kwb-cloud-username>" # your username
+NEXTCLOUD_PASSWORD = "your-nextcloud-app-password" ### see details below
+```
+
+For creating `<your-nextcloud-app-password>`:
+
+* go to: https://replace-with-dwc-cloud-url/index.php/settings/user/security
+
+* scroll down to `create new app password`
+
+* select a name e.g. `r-script` and copy the token and replace `your-nextcloud-app-password`
+
+
+3. Finally you need to restart Rstudio and proceed with the code below:
+
+```{r nextcloud_download, eval = FALSE}
+
+
+
+# Download rain data
+swmm_climate_files <- kwb.nextcloud::list_files(
+  paths$cloud_dir,
+  full_info = TRUE) %>% 
+  dplyr::filter(file == paths$file_rain)
+
+kwb.nextcloud::download_files(href = swmm_climate_files$href,
+                              target_dir = paths$model_dir)
+
+```
+
+# Run SWMM
+
+```{r run_swmm, eval = FALSE}
+# run andi`s model 
+swmmr::run_swmm(inp = paths$model_inp,
+                rpt = paths$model_rpt,
+                out = paths$model_out,
+                exec = paths$swmm_exe)
+                
+inp <- swmmr::read_inp(paths$model_inp)
+
+str(inp$lid_usage)
+
+
+<!-- new_par <- inp$lid_usage %>% -->
+<!-- dplyr::filter(Subcatchment == "Hof1") %>%  -->
+<!-- dplyr::mutate(Subcatchment = "Hof2") -->
+
+<!-- dplyr::bind_rows(inp$lid_usage, new_par) -->
+
+```

@@ -1,0 +1,127 @@
+---
+title: "Workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+#is_ghactions <- identical(Sys.getenv("CI"), "true")
+is_windows <- Sys.info()[1] == "Windows"
+```
+
+### Install R package
+
+```{r swmm_install, eval = FALSE}
+# Enable repository from kwb-r
+options(repos = c(
+  kwbr = 'https://kwb-r.r-universe.dev',
+  CRAN = 'https://cloud.r-project.org'))
+
+# Download and install kwb.swmm in R
+install.packages('kwb.swmm')
+
+library(kwb.swmm)
+
+```
+
+### Download SWMM Executable 
+
+```{r swmm_download, eval = is_windows}
+swmm_exe <- kwb.swmm::download_swmm_executable(tdir = getwd(),
+                                               swmm_version = "5.1.15")
+```
+
+### Define Paths 
+
+```{r swmm_paths, eval = is_windows}
+
+paths_list <- list(
+  model_dir =  kwb.swmm::extdata_file("models/lid"),
+  model_name = "zone-1_bioretention_cell.3.6mm.per.hour_through_no-drainage_lidshare-1.00",
+  model_inp = "<model_dir>/<model_name>.inp",
+  model_out = "<model_dir>/<model_name>.out",
+  model_rpt = "<model_dir>/<model_name>.rpt",
+  swmm_exe = swmm_exe
+)
+
+paths <- kwb.utils::resolve(paths_list)
+```
+
+### Read Input 
+
+```{r swmm_input, eval = TRUE}
+inp <- swmmr::read_inp(paths$model_inp)
+
+## print some inputs
+inp$options
+
+inp$lid_controls
+
+inp$lid_usage
+
+```
+
+### Run SWMM
+```{r swmm_run, eval = is_windows}
+kwb.swmm::run_swmm(model_dir = paths$model_dir,
+                   model_inp = paths$model_inp,
+                   exe = paths$swmm_exe)
+```
+
+
+### Read Output
+
+```{r swmm_output, eval = is_windows}
+
+results <- kwb.swmm::get_results(path_out = paths$model_out)
+results
+```
+
+### Calculate Rainstats
+
+```{r swmm_rainstats, eval = is_windows}
+results_system <- kwb.swmm::get_results(path_out = paths$model_out,
+                                        vIndex = c(1, 4)) %>%
+  dplyr::rename(
+    total_rainfall_mmPerHour = .data$total_rainfall,
+    total_runoff_litrePerSecond = .data$total_runoff
+  ) %>%
+  dplyr::mutate(total_runoff_mmPerHour = kwb.swmm::lps_to_mmPerHour(.data$total_runoff_litrePerSecond)) %>%
+  dplyr::select(-.data$total_runoff_litrePerSecond)
+
+results_vrr <-  results_system %>%
+  dplyr::mutate(year = lubridate::year(.data$datetime)) %>%
+  dplyr::group_by(.data$year) %>%
+  dplyr::summarise(vrr = 1 - (
+    sum(.data$total_runoff_mmPerHour) / sum(.data$total_rainfall_mmPerHour)
+  ))
+
+col_eventsep <- "total_rainfall_mmPerHour"
+
+rainevent_stats_mean <-
+  kwb.swmm::calculate_rainevent_stats(results_system,
+                                      col_eventsep = col_eventsep,
+                                      aggregation_function = "mean") %>%
+  dplyr::mutate(
+    rainfall_cbm = .data$dur * .data$mean_total_rainfall_mmPerHour / 3600 /
+      1000,
+    runoff_cbm = .data$dur * .data$mean_total_runoff_mmPerHour /
+      3600 / 1000,
+    vrr = 1 - runoff_cbm / rainfall_cbm
+  ) %>%
+  dplyr::arrange(dplyr::desc(.data$mean_total_rainfall_mmPerHour))
+
+rainevent_stats_max <-
+  kwb.swmm::calculate_rainevent_stats(results_system,
+                                      col_eventsep = col_eventsep,
+                                      aggregation_function = "max") %>%
+  dplyr::arrange(dplyr::desc(.data$max_total_rainfall_mmPerHour))
+
+```

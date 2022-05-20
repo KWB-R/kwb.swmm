@@ -1,0 +1,288 @@
+---
+title: "SWMM Python"
+author: "Michael Rustler"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{SWMM Python}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+is_ghactions <- identical(Sys.getenv("CI"), "true")
+```
+## Prerequisites 
+
+Install [Anaconda](https://www.anaconda.com/products/individual) on your computer
+(**requires admin rights!**): 
+[https://www.anaconda.com/products/individual#Downloads](https://www.anaconda.com/products/individual#Downloads)
+
+Or [Miniconda](https://docs.conda.io/en/latest/miniconda.html) with `kwb.python::install_miniconda()` (no admin rights required).
+
+For this tutorial [Miniconda](https://docs.conda.io/en/latest/miniconda.html) is 
+used.
+
+
+## Install miniconda
+
+```{r install_miniconda, eval = is_ghactions}
+kwb.python::install_miniconda()
+```
+
+## Install pywmm
+
+### pyswmm_v1.0.1
+
+Setup an environment named `swmm_py` for where we want to install [pyswmm v1.0.1](https://pyswmm.readthedocs.io/en/latest/) 
+
+DOES NOT WORK currently!
+
+```{r pyswmm_v101, eval = FALSE}
+### Create python environment 
+
+### Use Python 3.8 (as for 3.9 installation of "pyswmm" requires 
+### Microsoft Visual Studio 2017: "Building windows wheels for Python 3.9 requires 
+### Microsoft Visual Studio 2017 Get it with "Visual Studio 2017§
+
+
+################################################################################
+### Install "pyswmm" (v1.0.1 available, status:2021-01-25)
+### https://pypi.org/project/pyswmm/ 
+################################################################################
+
+### Downgrade dependency "aenum" to get rid of error: 
+### reticulate::import("pyswmm") 
+### Error in py_module_import(module, convert = convert) : 
+### NameError: name 'US' is not defined
+### https://github.com/OpenWaterAnalytics/pyswmm/issues/272#issuecomment-782697886
+### should be fixed in next release of "swmm-toolkit" (v0.9.0)
+### https://github.com/OpenWaterAnalytics/swmm-python/pull/67
+
+kwb.python::conda_py_install(env_name = "swmm_py", 
+                             pkgs = list(conda = c("python=3.8"), 
+                                         py = c("pyswmm", "aenum==2.2.6")))
+
+pyswmm <- reticulate::import("pyswmm", convert = TRUE)
+#Fehler in py_module_import(module, convert = convert) : 
+# ImportError: DLL load failed while importing _solver: 
+# The entered module was not found.
+
+### check pyswmm version (should be v1.0.1 as installed using "pip") 
+#pyswmm$VERSION_INFO
+```
+
+### pyswmm_v0.6.2
+
+Setup an environment named `swmm_conda` for where we want to install [pyswmm v0.6.2](https://pyswmm.readthedocs.io/en/latest/) 
+
+```{r pyswmm_v062, eval = is_ghactions}
+################################################################################
+### Install "pyswmm" (v0.6.2 available, status:2021-01-25)
+### https://pypi.org/project/pyswmm/ 
+################################################################################
+
+kwb.python::conda_py_install(env_name = "swmm_conda", 
+                             pkgs = list(conda = c("python=3.8", "pyswmm"), 
+                                         py = NULL))
+
+
+```
+## Use pyswmm
+
+As [pyswmm_v1.0.1]](#pyswmm_v1-0-1) currently fails to install this 
+tutorial uses [pyswmm_v0.6.2](#pyswmm_v0-6-2) in the following.
+
+```{r use_pyswmm, eval = is_ghactions}
+## force "swmm_conda" environment (pyswmm_v0.6.2)
+reticulate::use_miniconda(condaenv = "swmm_conda", required = TRUE)
+
+## load python module "pyswmm"
+pyswmm <- reticulate::import("pyswmm")
+
+### check pyswmm version (should be v0.6.2 as installed using "conda") 
+pyswmm$VERSION_INFO
+
+
+### Define paths
+paths_list <- list(
+  model_dir =  kwb.swmm::extdata_file("models/green-roof_neubrandenburg"),
+  model_name = "neubrand",
+  model_inp = "<model_dir>/<model_name>.inp",
+  model_out = "<model_dir>/<model_name>.out",
+  model_rpt = "<model_dir>/<model_name>.rpt",
+  swmm_dir = "C:/_UserProg/EPA SWMM 5.1.015",
+  swmm_exe = "<swmm_dir>/swmm5.exe",
+  swmm_dll = "<swmm_dir>/swmm5.dll"
+)
+
+paths <- kwb.utils::resolveAll(paths_list)
+
+
+withr::with_dir(new = paths$model_dir, 
+                code = {
+sim <- pyswmm$Simulation(inputfile = basename(paths$model_inp),
+                         reportfile = basename(paths$model_rpt),
+                         outputfile = basename(paths$model_out))
+                  }
+)
+
+sim$engine_version
+sim$system_units
+sim$flow_units
+sim$engine_version
+sim$execute()
+sim$runoff_error
+
+if(file.exists(paths$swmm_dll)) {
+ 
+ pyswmm$lib$use(paths$swmm_dll)
+ 
+withr::with_dir(new = paths$model_dir, 
+                code = {
+sim <- pyswmm$Simulation(inputfile = basename(paths$model_inp),
+                         reportfile = basename(paths$model_rpt),
+                         outputfile = basename(paths$model_out))
+                  }
+) 
+## Errors with: 
+## Fehler in py_call_impl(callable, dots$args, dots$keywords) : 
+## OSError: [WinError 193] %1 ist keine zulaessige Win32-Anwendung
+## open issue: https://github.com/OpenWaterAnalytics/pyswmm/issues/224
+
+}
+
+```
+
+## Dependencies
+
+### R  
+
+```{r session_info_local, echo = !is_ghactions, eval = FALSE}
+sessioninfo::session_info()
+- Session info -------------------------------------------------------------------------------------------
+ setting  value                       
+ version  R version 4.0.4 (2021-02-15)
+ os       Windows 10 x64              
+ system   x86_64, mingw32             
+ ui       RStudio                     
+ language (EN)                        
+ collate  German_Germany.1252         
+ ctype    German_Germany.1252         
+ tz       Europe/Berlin               
+ date     2021-03-25                  
+
+- Packages -----------------------------------------------------------------------------------------------
+ package     * version date       lib source        
+ assertthat    0.2.1   2019-03-21 [1] CRAN (R 4.0.2)
+ cli           2.3.1   2021-02-23 [1] CRAN (R 4.0.2)
+ digest        0.6.27  2020-10-24 [1] CRAN (R 4.0.3)
+ evaluate      0.14    2019-05-28 [1] CRAN (R 4.0.2)
+ glue          1.4.2   2020-08-27 [1] CRAN (R 4.0.2)
+ htmltools     0.5.1.1 2021-01-22 [1] CRAN (R 4.0.3)
+ jsonlite      1.7.2   2020-12-09 [1] CRAN (R 4.0.3)
+ knitr         1.31    2021-01-27 [1] CRAN (R 4.0.4)
+ lattice       0.20-41 2020-04-02 [1] CRAN (R 4.0.3)
+ Matrix        1.3-2   2021-01-06 [2] CRAN (R 4.0.4)
+ rappdirs      0.3.3   2021-01-31 [1] CRAN (R 4.0.3)
+ Rcpp          1.0.6   2021-01-15 [1] CRAN (R 4.0.3)
+ reticulate    1.18    2020-10-25 [1] CRAN (R 4.0.3)
+ rlang         0.4.10  2020-12-30 [1] CRAN (R 4.0.3)
+ rmarkdown     2.7     2021-02-19 [1] CRAN (R 4.0.4)
+ sessioninfo   1.1.1   2018-11-05 [1] CRAN (R 4.0.3)
+ withr         2.4.1   2021-01-26 [1] CRAN (R 4.0.3)
+ xfun          0.22    2021-03-11 [1] CRAN (R 4.0.4)
+ yaml          2.2.1   2020-02-01 [1] CRAN (R 4.0.2)
+
+[1] C:/Users/mrustl/Documents/R/win-library/4.0
+[2] C:/Program Files/R/R-4.0.4/library
+
+```
+
+```{r session_info_gh, eval = is_ghactions}
+sessioninfo::session_info()
+```
+
+### Conda Environment Yaml 
+
+pyswmm v1.0.1 (from [PyPi](https://pypi.org/project/pyswmm/))
+
+```{r conda_env_swmm_py_01, echo = !is_ghactions, eval = !is_ghactions}
+path_environment_yml <- kwb.python::conda_export("swmm_py")
+path_environment_yml
+cat(paste0(readLines(path_environment_yml), collapse = "\n"))
+```
+
+```{r conda_env_swmm_py_02, echo = is_ghactions, eval = FALSE}
+path_environment_yml <- kwb.python::conda_export("swmm_py")
+path_environment_yml
+cat(paste0(readLines(path_environment_yml), collapse = "\n"))
+
+name: swmm_py
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - aenum=2.2.6=pyhd3deb0d_0
+  - ca-certificates=2020.12.5=h5b45459_0
+  - certifi=2020.12.5=py38haa244fe_1
+  - openssl=1.1.1k=h8ffe710_0
+  - pip=21.0.1=pyhd8ed1ab_0
+  - python=3.8.8=h7840368_0_cpython
+  - python_abi=3.8=1_cp38
+  - setuptools=49.6.0=py38haa244fe_3
+  - sqlite=3.35.4=h8ffe710_0
+  - vc=14.2=hb210afc_4
+  - vs2015_runtime=14.28.29325=h5e1d092_4
+  - wheel=0.36.2=pyhd3deb0d_0
+  - wincertstore=0.2=py38haa244fe_1006
+  - pip:
+    - pyswmm==1.0.1
+    - swmm-toolkit==0.8.1
+prefix: C:\Users\mrustl\AppData\Local\r-miniconda\envs\swmm_py
+
+```
+
+
+**pyswmm v0.6.2** (from [conda-forge](https://anaconda.org/conda-forge/pyswmm))
+
+
+```{r conda_env_swmm_conda_01, echo = !is_ghactions, eval = !is_ghactions}
+path_environment_yml <- kwb.python::conda_export("swmm_py")
+path_environment_yml
+cat(paste0(readLines(path_environment_yml), collapse = "\n"))
+```
+
+```{r conda_env_swmm_conda_02, echo = is_ghactions, eval = FALSE}
+path_environment_yml <- kwb.python::conda_export("swmm_conda")
+path_environment_yml
+cat(paste0(readLines(path_environment_yml), collapse = "\n"))
+
+name: swmm_conda
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - ca-certificates=2020.12.5=h5b45459_0
+  - certifi=2020.12.5=py38haa244fe_1
+  - llvm-openmp=8.0.1=h1ad3211_0
+  - openmp=8.0.1=0
+  - openssl=1.1.1k=h8ffe710_0
+  - pip=21.0.1=pyhd8ed1ab_0
+  - pyswmm=0.6.2=pyh9f0ad1d_1
+  - python=3.8.8=h7840368_0_cpython
+  - python_abi=3.8=1_cp38
+  - setuptools=49.6.0=py38haa244fe_3
+  - six=1.15.0=pyh9f0ad1d_0
+  - sqlite=3.35.2=h8ffe710_0
+  - swmm=5.2.1=ha925a31_1
+  - vc=14.2=hb210afc_4
+  - vs2015_runtime=14.28.29325=h5e1d092_4
+  - wheel=0.36.2=pyhd3deb0d_0
+  - wincertstore=0.2=py38haa244fe_1006
+prefix: C:\Users\mrustl\.conda\envs\swmm_conda
+```
