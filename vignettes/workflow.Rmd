@@ -96,12 +96,15 @@ results_system <- kwb.swmm::get_results(path_out = paths$model_out,
   dplyr::mutate(total_runoff_mmPerHour = kwb.swmm::lps_to_mmPerHour(.data$total_runoff_litrePerSecond)) %>%
   dplyr::select(-.data$total_runoff_litrePerSecond)
 
+results_system
+
 results_vrr <-  results_system %>%
   dplyr::mutate(year = lubridate::year(.data$datetime)) %>%
   dplyr::group_by(.data$year) %>%
   dplyr::summarise(vrr = 1 - (
     sum(.data$total_runoff_mmPerHour) / sum(.data$total_rainfall_mmPerHour)
   ))
+results_vrr
 
 col_eventsep <- "total_rainfall_mmPerHour"
 
@@ -118,10 +121,14 @@ rainevent_stats_mean <-
   ) %>%
   dplyr::arrange(dplyr::desc(.data$mean_total_rainfall_mmPerHour))
 
+rainevent_stats_mean
+
 rainevent_stats_max <-
   kwb.swmm::calculate_rainevent_stats(results_system,
                                       col_eventsep = col_eventsep,
                                       aggregation_function = "max") %>%
   dplyr::arrange(dplyr::desc(.data$max_total_rainfall_mmPerHour))
+
+rainevent_stats_max
 
 ```
