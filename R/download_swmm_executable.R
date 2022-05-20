@@ -12,6 +12,7 @@
 #' @importFrom archive archive_extract
 #' @importFrom rlang .data
 #' @importFrom kwb.utils catAndRun
+#' @importFrom fs path_norm
 #' @examples
 #' download_swmm_executable()
 #'

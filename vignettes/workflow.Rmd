@@ -44,7 +44,7 @@ swmm_exe <- kwb.swmm::download_swmm_executable(tdir = getwd(),
 
 paths_list <- list(
   model_dir =  kwb.swmm::extdata_file("models/lid"),
-  model_name = "zone-1_bioretention_cell.3.6mm.per.hour_through_no-drainage_lidshare-1.00",
+  model_name = "zone-1_bioretention-cell_lidshare-1.00",
   model_inp = "<model_dir>/<model_name>.inp",
   model_out = "<model_dir>/<model_name>.out",
   model_rpt = "<model_dir>/<model_name>.rpt",
