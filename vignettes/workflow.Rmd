@@ -56,7 +56,7 @@ paths <- kwb.utils::resolve(paths_list)
 
 ### Read Input 
 
-```{r swmm_input, eval = TRUE}
+```{r swmm_input, eval = is_windows}
 inp <- swmmr::read_inp(paths$model_inp)
 
 ## print some inputs
