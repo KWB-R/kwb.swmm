@@ -100,7 +100,7 @@
 
 <span class="va">swmm_exe</span> <span class="op">&lt;-</span> <span class="fu">kwb.swmm</span><span class="fu">::</span><span class="fu"><a href="../reference/download_swmm_executable.html">download_swmm_executable</a></span><span class="op">(</span>tdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
                                                swmm_version <span class="op">=</span> <span class="st">"5.2.0"</span><span class="op">)</span>
-<span class="co">#&gt; Downloading and extracting SWMM folder to 'D:/a/kwb.swmm/kwb.swmm/vignettes' ... ok. (0.36s)</span></code></pre></div>
+<span class="co">#&gt; Downloading and extracting SWMM folder to 'D:/a/kwb.swmm/kwb.swmm/vignettes' ... ok. (0.55s)</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="define-paths">Define Paths<a class="anchor" aria-label="anchor" href="#define-paths"></a>
@@ -109,7 +109,7 @@
 <code class="sourceCode R">
 <span class="va">paths_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
   model_dir <span class="op">=</span>  <span class="fu">kwb.swmm</span><span class="fu">::</span><span class="fu"><a href="../reference/extdata_file.html">extdata_file</a></span><span class="op">(</span><span class="st">"models/lid"</span><span class="op">)</span>,
-  model_name <span class="op">=</span> <span class="st">"zone-1_bioretention_cell.3.6mm.per.hour_through_no-drainage_lidshare-1.00"</span>,
+  model_name <span class="op">=</span> <span class="st">"zone-1_bioretention-cell_lidshare-1.00"</span>,
   model_inp <span class="op">=</span> <span class="st">"&lt;model_dir&gt;/&lt;model_name&gt;.inp"</span>,
   model_out <span class="op">=</span> <span class="st">"&lt;model_dir&gt;/&lt;model_name&gt;.out"</span>,
   model_rpt <span class="op">=</span> <span class="st">"&lt;model_dir&gt;/&lt;model_name&gt;.rpt"</span>,
@@ -273,8 +273,8 @@
     vrr <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">runoff_cbm</span> <span class="op">/</span> <span class="va">rainfall_cbm</span>
   <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">mean_total_rainfall_mmPerHour</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Calculating `mean` event stats for parameter `total_rainfall_mmPerHour` ... ok. (4.34s) </span>
-<span class="co">#&gt; Calculating `mean` event stats for parameter `total_runoff_mmPerHour` ... ok. (4.12s)</span>
+<span class="co">#&gt; Calculating `mean` event stats for parameter `total_rainfall_mmPerHour` ... ok. (4.80s) </span>
+<span class="co">#&gt; Calculating `mean` event stats for parameter `total_runoff_mmPerHour` ... ok. (4.69s)</span>
 
 <span class="va">rainevent_stats_mean</span>
 <span class="co">#&gt;      iBeg iEnd                tBeg                tEnd    dur  pBefore   pAfter</span>
@@ -3979,8 +3979,8 @@
                                       col_eventsep <span class="op">=</span> <span class="va">col_eventsep</span>,
                                       aggregation_function <span class="op">=</span> <span class="st">"max"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">max_total_rainfall_mmPerHour</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Calculating `max` event stats for parameter `total_rainfall_mmPerHour` ... ok. (3.99s) </span>
-<span class="co">#&gt; Calculating `max` event stats for parameter `total_runoff_mmPerHour` ... ok. (3.44s)</span>
+<span class="co">#&gt; Calculating `max` event stats for parameter `total_rainfall_mmPerHour` ... ok. (4.49s) </span>
+<span class="co">#&gt; Calculating `max` event stats for parameter `total_runoff_mmPerHour` ... ok. (3.95s)</span>
 
 <span class="va">rainevent_stats_max</span>
 <span class="co">#&gt;      iBeg iEnd                tBeg                tEnd    dur  pBefore   pAfter</span>
