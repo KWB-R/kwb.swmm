@@ -26,4 +26,4 @@ help(package = 'kwb.swmm')
 ```
 ## Usage 
 
-Checkout the [Workflow](../articles/workflow.html) article on how to use this R package.
+Checkout the [Workflow](articles/workflow.html) article on how to use this R package.
