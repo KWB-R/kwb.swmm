@@ -38,8 +38,7 @@ Imports:
 Suggests: 
     covr,
     knitr,
-    kwb.nextcloud,
-    kwb.python,
+    lubridate,
     reticulate,
     rmarkdown,
     sessioninfo,
