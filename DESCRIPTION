@@ -48,5 +48,6 @@ Remotes:
     github::kwb-r/kwb.event,
     github::kwb-r/kwb.nextcloud,
     github::kwb-r/kwb.python,
-    github::kwb-r/kwb.utils
+    github::kwb-r/kwb.utils,
+    github::hsonne/swmmr@mydev
 VignetteBuilder: knitr
