@@ -27,13 +27,13 @@ options(repos = c(
 # Download and install kwb.swmm in R
 install.packages('kwb.swmm')
 
-library(kwb.swmm)
-
 ```
 
 ### Download SWMM Executable 
 
 ```{r swmm_download, eval = is_windows}
+library(kwb.swmm)
+
 swmm_exe <- kwb.swmm::download_swmm_executable(tdir = getwd(),
                                                swmm_version = "5.2.0")
 ```
