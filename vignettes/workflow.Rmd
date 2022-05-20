@@ -121,7 +121,7 @@ rainevent_stats_mean <-
   ) %>%
   dplyr::arrange(dplyr::desc(.data$mean_total_rainfall_mmPerHour))
 
-rainevent_stats_mean
+head(rainevent_stats_mean)
 
 rainevent_stats_max <-
   kwb.swmm::calculate_rainevent_stats(results_system,
@@ -129,6 +129,6 @@ rainevent_stats_max <-
                                       aggregation_function = "max") %>%
   dplyr::arrange(dplyr::desc(.data$max_total_rainfall_mmPerHour))
 
-rainevent_stats_max
+head(rainevent_stats_max)
 
 ```
