@@ -100,7 +100,7 @@
 
 <span class="va">swmm_exe</span> <span class="op">&lt;-</span> <span class="fu">kwb.swmm</span><span class="fu">::</span><span class="fu"><a href="../reference/download_swmm_executable.html">download_swmm_executable</a></span><span class="op">(</span>tdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,
                                                swmm_version <span class="op">=</span> <span class="st">"5.2.0"</span><span class="op">)</span>
-<span class="co">#&gt; Downloading and extracting SWMM folder to 'D:/a/kwb.swmm/kwb.swmm/vignettes' ... ok. (0.24s)</span></code></pre></div>
+<span class="co">#&gt; Downloading and extracting SWMM folder to 'D:/a/kwb.swmm/kwb.swmm/vignettes' ... ok. (0.36s)</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="define-paths">Define Paths<a class="anchor" aria-label="anchor" href="#define-paths"></a>
@@ -273,8 +273,8 @@
     vrr <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">runoff_cbm</span> <span class="op">/</span> <span class="va">rainfall_cbm</span>
   <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">mean_total_rainfall_mmPerHour</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Calculating `mean` event stats for parameter `total_rainfall_mmPerHour` ... ok. (4.23s) </span>
-<span class="co">#&gt; Calculating `mean` event stats for parameter `total_runoff_mmPerHour` ... ok. (3.99s)</span>
+<span class="co">#&gt; Calculating `mean` event stats for parameter `total_rainfall_mmPerHour` ... ok. (4.34s) </span>
+<span class="co">#&gt; Calculating `mean` event stats for parameter `total_runoff_mmPerHour` ... ok. (4.12s)</span>
 
 <span class="va">rainevent_stats_mean</span>
 <span class="co">#&gt;      iBeg iEnd                tBeg                tEnd    dur  pBefore   pAfter</span>
@@ -3979,8 +3979,8 @@
                                       col_eventsep <span class="op">=</span> <span class="va">col_eventsep</span>,
                                       aggregation_function <span class="op">=</span> <span class="st">"max"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">max_total_rainfall_mmPerHour</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Calculating `max` event stats for parameter `total_rainfall_mmPerHour` ... ok. (3.92s) </span>
-<span class="co">#&gt; Calculating `max` event stats for parameter `total_runoff_mmPerHour` ... ok. (3.32s)</span>
+<span class="co">#&gt; Calculating `max` event stats for parameter `total_rainfall_mmPerHour` ... ok. (3.99s) </span>
+<span class="co">#&gt; Calculating `max` event stats for parameter `total_runoff_mmPerHour` ... ok. (3.44s)</span>
 
 <span class="va">rainevent_stats_max</span>
 <span class="co">#&gt;      iBeg iEnd                tBeg                tEnd    dur  pBefore   pAfter</span>
