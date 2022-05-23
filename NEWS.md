@@ -1,4 +1,4 @@
-# [kwb.swmm 0.1.0](https://github.com/KWB-R/kwb.swmm/releases/tag/v0.1.0) <small>2022-05-20</small>
+# [kwb.swmm 0.1.0](https://github.com/KWB-R/kwb.swmm/releases/tag/v0.1.0) <small>2022-05-23</small>
 
 * **Functions**
 
