@@ -1,7 +1,7 @@
 Package: kwb.swmm
 Title: R Package with Functions for Working with EPA`s Storm
     Water Management Model (SWMM)
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     c(person(given = "Michael",
              family = "Rustler",
@@ -49,5 +49,5 @@ Remotes:
     github::kwb-r/kwb.nextcloud,
     github::kwb-r/kwb.python,
     github::kwb-r/kwb.utils,
-    github::hsonne/swmmr@mydev
+    github::hsonne/swmmr@dev
 VignetteBuilder: knitr

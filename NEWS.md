@@ -1,3 +1,9 @@
+# [kwb.swmm 0.1.1](https://github.com/KWB-R/kwb.swmm/releases/tag/v0.1.1) <small>2024-03-13</small>
+
+Adapt `swmmr` dependency to use `hsonne/swmmr@dev` instead of `hsonne/swmmr@mydev` 
+(has been deleted)
+
+
 # [kwb.swmm 0.1.0](https://github.com/KWB-R/kwb.swmm/releases/tag/v0.1.0) <small>2022-05-23</small>
 
 * **Functions**
